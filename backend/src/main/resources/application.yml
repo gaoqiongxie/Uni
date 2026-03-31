@@ -1,0 +1,112 @@
+# 应用配置
+spring:
+  application:
+    name: uni-app
+
+  # 数据源配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/uni_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: your_password
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+
+  # Redis配置
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: your_redis_password
+      database: 0
+      timeout: 10000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+
+  # 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+
+# Server配置
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+# MyBatis Plus配置
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.uni.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleteFlag
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# 应用自定义配置
+app:
+  jwt:
+    secret: uni_app_jwt_secret_key_minimum_256_bits_long
+    expire: 7200        # token过期时间(秒)，默认2小时
+    refresh-expire: 604800  # refresh token过期时间，默认7天
+
+  qiniu:
+    access-key: your_qiniu_access_key
+    secret-key: your_qiniu_secret_key
+    bucket: uni-app
+    domain: https://your-qiniu-domain.com
+
+  sms:
+    access-key: your_sms_access_key
+    secret-key: your_sms_secret_key
+    template-code: SMS_XXXXXXXX
+    sign-name: 轻瘦App
+
+  # 默认值配置
+  defaults:
+    calorie-goal: 1400        # 默认每日热量目标(kcal)
+    weight-record-days: 90    # 体重记录查询默认天数
+
+# Swagger文档配置
+knife4j:
+  enable: true
+  openapi:
+    title: 轻瘦App API文档
+    description: 轻瘦减脂健康应用接口文档
+    version: 1.0.0
+    concat: 高琼
+    license: Apache 2.0
+
+# 日志配置
+logging:
+  level:
+    com.uni: DEBUG
+    org.springframework.web: INFO
+    com.baomidou.mybatisplus: DEBUG
+  file:
+    name: logs/uni-app.log
+  logback:
+    rollingpolicy:
+      max-file-size: 100MB
+      max-history: 30
