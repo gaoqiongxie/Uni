@@ -1,110 +1,146 @@
-# 轻瘦 - 内容策略与产品规划
+# 轻瘦 (uni) 快速启动指南
 
-## 📁 文档目录
+## 项目结构
 
-本文件夹包含"轻瘦"减肥健康应用的完整内容策略和产品规划文档。
+```
+uni/
+├── backend/               # Spring Boot 后端
+│   ├── src/
+│   │   └── main/
+│   │       ├── java/com/uni/
+│   │       │   ├── UniApplication.java  # 启动类
+│   │       │   ├── common/              # 公共模块 (Result, BizCode, Exception)
+│   │       │   ├── config/              # 配置类 (MybatisPlus, CORS, Security)
+│   │       │   ├── controller/          # 控制器
+│   │       │   ├── dto/                 # 入参 DTO
+│   │       │   ├── entity/              # 数据库实体
+│   │       │   ├── mapper/              # Mapper 接口
+│   │       │   ├── service/             # Service 接口 + 实现
+│   │       │   ├── util/                # 工具类 (JwtUtil)
+│   │       │   └── vo/                  # 出参 VO
+│   │       └── resources/
+│   │           ├── application.yml      # 开发配置
+│   │           ├── application-prod.yml # 生产配置
+│   │           └── db/init.sql          # 建表 SQL
+│   ├── Dockerfile
+│   └── pom.xml
+├── frontend/              # Uni-app 前端
+│   ├── src/
+│   │   ├── api/           # 接口封装
+│   │   ├── pages/         # 所有页面
+│   │   │   ├── user/      # login / register / profile
+│   │   │   ├── health/    # record-weight / weight-history
+│   │   │   ├── meal/      # meal-record / meal-calendar
+│   │   │   ├── dashboard/ # 数据看板
+│   │   │   └── settings/  # 设置
+│   │   ├── store/         # Pinia 状态管理
+│   │   ├── types/         # TypeScript 类型定义
+│   │   └── utils/         # 工具函数
+│   ├── pages.json         # 页面路由配置
+│   ├── vite.config.ts
+│   └── package.json
+└── docker-compose.yml     # 一键部署
+```
 
-### 文档列表
+## 本地开发启动
 
-1. **01-产品架构与功能模块.md**
-   - 项目基本信息
-   - 目标用户画像
-   - 核心功能模块(10大模块)
-   - 产品数据指标
-   - 产品设计风格
+### 1. 启动基础服务 (MySQL + Redis)
 
-2. **02-内容策略详解.md**
-   - 内容策略目标
-   - 多渠道内容策略(微信、小红书、抖音、快手)
-   - 编辑日历
-   - 内容运营指标
+```bash
+# 只启动 mysql 和 redis
+docker-compose up -d mysql redis
 
-3. **03-品牌叙事与内容支柱.md**
-   - 品牌核心叙事
-   - 品牌价值观
-   - 内容支柱体系(4大支柱)
-   - 内容风格矩阵
-   - 内容创作模板
+# 等待服务健康检查通过（约 30s）
+docker-compose ps
+```
 
-4. **04-内容创作与执行指南.md**
-   - 内容创作工作流
-   - 内容创作工具库
-   - 内容创作规范
-   - 平台特色创作指南
-   - 创作团队配置
+### 2. 后端启动
 
----
+```bash
+cd backend
 
-## 🎯 项目概览
+# 安装依赖并启动（需要 JDK 17+、Maven 3.8+）
+mvn spring-boot:run
 
-### 项目名称
-**轻瘦 (QingShou)**
+# 或者打包后运行
+mvn clean package -DskipTests
+java -jar target/uni-app-1.0.0.jar
+```
 
-### 核心价值主张
-> 不节食、不过度运动,用科学的方式享受轻松的健康生活
+后端默认端口：**8080**
 
-### 目标用户
-- 核心用户: 25-35岁都市白领
-- 次要用户: 产后妈妈、大学生、轻度减脂需求人群
+### 3. 前端启动
 
-### 核心功能
-1. 健康档案
-2. 每日食谱推荐
-3. 每日餐食打卡
-4. "你运动了吗？"
-5. 减脂社区
-6. 健康资讯
-7. 成就与激励系统
-8. 智能提醒系统
-9. 个人中心
-10. 高级功能(V1.1)
+```bash
+cd frontend
 
----
+# 安装依赖（需要 Node.js 18+）
+npm install
 
-## 📊 内容策略核心
+# 微信小程序开发（需要 HBuilderX 或微信开发者工具）
+npm run dev:mp-weixin
 
-### 内容支柱(4大支柱)
-1. **科学营养** - 营养学知识、食谱开发、饮食科普
-2. **运动健康** - 运动计划、健身教程、体能进阶
-3. **心理激励** - 成功故事、挑战激励、社区互动
-4. **生活方式** - 日常习惯、睡眠管理、压力释放
+# H5 Web 开发预览
+npm run dev:h5
+```
 
-### 内容渠道
-- 微信公众号 + 视频号
-- 小红书
-- 抖音
-- 快手
+前端开发服务：**http://localhost:5173**
 
-### 关键指标
-- 新增粉丝: 500+/周
-- 平均阅读率: 25%+
-- 转发分享率: 5%+
-- 用户互动率: 10%+
-- App下载转化: 3%+
+## 一键 Docker 部署
 
----
+```bash
+# 构建并启动所有服务
+docker-compose up -d --build
 
-## 🚀 快速开始
+# 查看日志
+docker-compose logs -f backend
 
-### 第一步: 阅读产品架构
-从 `01-产品架构与功能模块.md` 开始,了解产品全貌。
+# 停止所有服务
+docker-compose down
+```
 
-### 第二步: 理解内容策略
-阅读 `02-内容策略详解.md` 和 `03-品牌叙事与内容支柱.md`,掌握内容方向。
+## 数据库配置
 
-### 第三步: 开始创作
-参考 `04-内容创作与执行指南.md`,开始内容创作与运营。
+| 参数 | 开发环境默认值 | 说明 |
+|------|--------------|------|
+| host | localhost | 主机 |
+| port | 3306 | 端口 |
+| database | uni_db | 数据库名 |
+| username | root | 用户名（开发） |
+| password | root123456 | 密码（开发） |
 
----
+数据库表会在应用启动时通过 `db/init.sql` 自动初始化。
 
-## 📅 更新记录
+## API 文档
 
-| 版本 | 日期 | 更新内容 | 负责人 |
-|-----|------|---------|-------|
-| V1.0 | 2026-03-31 | 初始版本创建 | 高琼 |
+启动后端后访问 Swagger UI（如果开启）：
+```
+http://localhost:8080/swagger-ui/index.html
+```
 
----
+主要接口：
 
-**项目负责人**: 高琼
-**创建时间**: 2026-03-31
-**最后更新**: 2026-03-31
+| 模块 | 路径前缀 |
+|------|---------|
+| 用户 | /api/user |
+| 体重记录 | /api/weight-record |
+| 餐食打卡 | /api/meal-record |
+| 附件上传 | /api/attachment |
+
+## 关键配置修改
+
+生产部署前，请修改以下配置（`docker-compose.yml` 或环境变量）：
+
+- `MYSQL_PASSWORD` / `DB_PASSWORD`：数据库密码
+- `REDIS_PASSWORD`：Redis 密码  
+- `JWT_SECRET`：JWT 密钥（建议 32 位以上随机字符串）
+
+## 技术栈
+
+| 端 | 技术 |
+|----|-----|
+| 后端 | Spring Boot 3.x + MyBatis-Plus 3.5.5 + JWT |
+| 数据库 | MySQL 8.0 |
+| 缓存 | Redis 7.0 |
+| 前端 | Uni-app (Vue3 + TypeScript) + Pinia |
+| 部署 | Docker + docker-compose |

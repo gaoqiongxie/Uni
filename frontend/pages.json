@@ -1,0 +1,106 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "首页",
+        "navigationBarBackgroundColor": "#667eea",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/user/login",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/user/register",
+      "style": {
+        "navigationBarTitleText": "注册",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/user/profile",
+      "style": {
+        "navigationBarTitleText": "个人资料"
+      }
+    },
+    {
+      "path": "pages/health/record-weight",
+      "style": {
+        "navigationBarTitleText": "记录体重"
+      }
+    },
+    {
+      "path": "pages/health/weight-history",
+      "style": {
+        "navigationBarTitleText": "体重历史"
+      }
+    },
+    {
+      "path": "pages/meal/meal-record",
+      "style": {
+        "navigationBarTitleText": "餐食打卡"
+      }
+    },
+    {
+      "path": "pages/meal/meal-calendar",
+      "style": {
+        "navigationBarTitleText": "打卡日历"
+      }
+    },
+    {
+      "path": "pages/dashboard/dashboard",
+      "style": {
+        "navigationBarTitleText": "数据看板"
+      }
+    },
+    {
+      "path": "pages/settings/settings",
+      "style": {
+        "navigationBarTitleText": "设置"
+      }
+    }
+  ],
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#667eea",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/images/icons/home.png",
+        "selectedIconPath": "static/images/icons/home-active.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/meal/meal-record",
+        "iconPath": "static/images/icons/meal.png",
+        "selectedIconPath": "static/images/icons/meal-active.png",
+        "text": "打卡"
+      },
+      {
+        "pagePath": "pages/dashboard/dashboard",
+        "iconPath": "static/images/icons/chart.png",
+        "selectedIconPath": "static/images/icons/chart-active.png",
+        "text": "统计"
+      },
+      {
+        "pagePath": "pages/settings/settings",
+        "iconPath": "static/images/icons/mine.png",
+        "selectedIconPath": "static/images/icons/mine-active.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "轻瘦",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  }
+}
