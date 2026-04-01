@@ -3,7 +3,7 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "首页",
+        "navigationBarTitleText": "轻瘦",
         "navigationBarBackgroundColor": "#667eea",
         "navigationBarTextStyle": "white"
       }
@@ -53,18 +53,6 @@
       }
     },
     {
-      "path": "pages/dashboard/dashboard",
-      "style": {
-        "navigationBarTitleText": "数据看板"
-      }
-    },
-    {
-      "path": "pages/settings/settings",
-      "style": {
-        "navigationBarTitleText": "设置"
-      }
-    },
-    {
       "path": "pages/exercise/exercise-record",
       "style": {
         "navigationBarTitleText": "运动记录",
@@ -96,6 +84,20 @@
         "navigationBarTitleText": "食谱详情",
         "navigationStyle": "custom"
       }
+    },
+    {
+      "path": "pages/mine/mine",
+      "style": {
+        "navigationBarTitleText": "我的",
+        "navigationBarBackgroundColor": "#667eea",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/settings/settings",
+      "style": {
+        "navigationBarTitleText": "设置"
+      }
     }
   ],
   "tabBar": {
@@ -106,26 +108,32 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "static/images/icons/home.png",
-        "selectedIconPath": "static/images/icons/home-active.png",
+        "iconPath": "static/icons/home.png",
+        "selectedIconPath": "static/icons/home-active.png",
         "text": "首页"
       },
       {
         "pagePath": "pages/meal/meal-record",
-        "iconPath": "static/images/icons/meal.png",
-        "selectedIconPath": "static/images/icons/meal-active.png",
-        "text": "打卡"
+        "iconPath": "static/icons/meal.png",
+        "selectedIconPath": "static/icons/meal-active.png",
+        "text": "餐食"
       },
       {
-        "pagePath": "pages/dashboard/dashboard",
-        "iconPath": "static/images/icons/chart.png",
-        "selectedIconPath": "static/images/icons/chart-active.png",
-        "text": "统计"
+        "pagePath": "pages/exercise/exercise-record",
+        "iconPath": "static/icons/sport.png",
+        "selectedIconPath": "static/icons/sport-active.png",
+        "text": "运动"
       },
       {
-        "pagePath": "pages/settings/settings",
-        "iconPath": "static/images/icons/mine.png",
-        "selectedIconPath": "static/images/icons/mine-active.png",
+        "pagePath": "pages/recipe/recipe-list",
+        "iconPath": "static/icons/recipe.png",
+        "selectedIconPath": "static/icons/recipe-active.png",
+        "text": "食谱"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "iconPath": "static/icons/mine.png",
+        "selectedIconPath": "static/icons/mine-active.png",
         "text": "我的"
       }
     ]

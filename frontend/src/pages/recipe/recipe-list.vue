@@ -257,10 +257,19 @@ function handleLoadMore() {
 }
 
 onMounted(() => {
-  recipeStore.loadRecommend({
-    maxCalorie: userStore.userInfo?.calorieGoal,
-    reset: true
-  })
+  // 检查是否从收藏入口跳转
+  const pages = getCurrentPages()
+  const currentPage = pages[pages.length - 1]
+  const tab = (currentPage as any).options?.tab
+  if (tab === 'favorites') {
+    showFavorites.value = true
+    recipeStore.loadFavorites(true)
+  } else {
+    recipeStore.loadRecommend({
+      maxCalorie: userStore.userInfo?.calorieGoal,
+      reset: true
+    })
+  }
 })
 </script>
 

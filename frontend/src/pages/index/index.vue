@@ -71,10 +71,25 @@
           <text class="action-icon">📅</text>
           <text class="action-name">打卡日历</text>
         </view>
-        <view class="action-item" @click="goToDashboard">
-          <text class="action-icon">📊</text>
-          <text class="action-name">数据统计</text>
+        <view class="action-item" @click="goToExercise">
+          <text class="action-icon">🏃</text>
+          <text class="action-name">记录运动</text>
         </view>
+      </view>
+    </view>
+
+    <!-- 推荐食谱入口 -->
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">健康食谱</text>
+        <text class="section-link" @click="goToRecipes">查看更多 →</text>
+      </view>
+      <view class="recipe-card" @click="goToRecipes">
+        <view class="recipe-info">
+          <text class="recipe-title">🥗 减脂食谱推荐</text>
+          <text class="recipe-desc">科学搭配 · 低卡美味 · 轻松减脂</text>
+        </view>
+        <text class="recipe-arrow">›</text>
       </view>
     </view>
 
@@ -149,8 +164,11 @@ function goToWeightHistory() {
 function goToCalendar() {
   uni.navigateTo({ url: '/pages/meal/meal-calendar' })
 }
-function goToDashboard() {
-  uni.switchTab({ url: '/pages/dashboard/dashboard' })
+function goToExercise() {
+  uni.switchTab({ url: '/pages/exercise/exercise-record' })
+}
+function goToRecipes() {
+  uni.switchTab({ url: '/pages/recipe/recipe-list' })
 }
 
 onMounted(async () => {
@@ -374,6 +392,36 @@ onMounted(async () => {
       font-size: $font-size-sm;
       color: $text-secondary;
       line-height: 1.6;
+    }
+  }
+
+  .recipe-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: $border-radius;
+    padding: 40rpx 30rpx;
+    margin: 0 30rpx;
+
+    .recipe-info {
+      .recipe-title {
+        display: block;
+        font-size: $font-size-md;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 10rpx;
+      }
+
+      .recipe-desc {
+        font-size: $font-size-sm;
+        color: rgba(255, 255, 255, 0.85);
+      }
+    }
+
+    .recipe-arrow {
+      font-size: 48rpx;
+      color: rgba(255, 255, 255, 0.8);
     }
   }
 }
