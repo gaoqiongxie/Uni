@@ -1,9 +1,11 @@
 package com.uni.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.uni.common.BizCode;
 import com.uni.common.BizException;
+import com.uni.common.PageResult;
 import com.uni.dto.weight.WeightRecordDTO;
 import com.uni.entity.UserEntity;
 import com.uni.entity.WeightRecordEntity;
@@ -91,6 +93,28 @@ public class WeightRecordServiceImpl extends ServiceImpl<WeightRecordMapper, Wei
             BeanUtils.copyProperties(e, vo);
             return vo;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public PageResult<WeightRecordVO> getWeightRecordsPage(Long userId, int page, int size, String startDate, String endDate) {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate start = startDate != null ? LocalDate.parse(startDate, fmt) : LocalDate.now().minusDays(90);
+        LocalDate end = endDate != null ? LocalDate.parse(endDate, fmt) : LocalDate.now();
+
+        Page<WeightRecordEntity> pageParam = new Page<>(page, size);
+        Page<WeightRecordEntity> result = baseMapper.selectPage(pageParam, new LambdaQueryWrapper<WeightRecordEntity>()
+                .eq(WeightRecordEntity::getUserId, userId)
+                .between(WeightRecordEntity::getRecordDate, start, end)
+                .eq(WeightRecordEntity::getDeleteFlag, 0)
+                .orderByDesc(WeightRecordEntity::getRecordDate));
+
+        List<WeightRecordVO> voList = result.getRecords().stream().map(e -> {
+            WeightRecordVO vo = new WeightRecordVO();
+            BeanUtils.copyProperties(e, vo);
+            return vo;
+        }).collect(Collectors.toList());
+
+        return new PageResult<>(voList, result.getTotal(), page, size);
     }
 
     @Override

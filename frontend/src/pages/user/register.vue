@@ -76,10 +76,6 @@
           <text class="label">目标体重(kg)</text>
           <input class="input" type="digit" placeholder="52" v-model="form.targetWeight" />
         </view>
-        <view class="form-item half">
-          <text class="label">年龄</text>
-          <input class="input" type="number" placeholder="28" v-model="form.age" />
-        </view>
       </view>
 
       <button class="submit-btn gradient-bg" @click="handleRegister" :loading="loading">
@@ -97,6 +93,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useUserStore } from '../../store/user'
+import { userApi } from '../../api/user.api'
 
 const userStore = useUserStore()
 const loading = ref(false)
@@ -109,8 +106,7 @@ const form = reactive({
   password: '',
   height: '',
   weight: '',
-  targetWeight: '',
-  age: ''
+  targetWeight: ''
 })
 
 let timer: ReturnType<typeof setInterval> | null = null
@@ -121,7 +117,7 @@ async function sendCode() {
     return
   }
   try {
-    // TODO: 调用发送验证码接口
+    await userApi.sendSmsCode(form.phone, 'register')
     countdown.value = 60
     timer = setInterval(() => {
       if (countdown.value <= 0) {
@@ -132,8 +128,8 @@ async function sendCode() {
       }
     }, 1000)
     uni.showToast({ title: '验证码已发送', icon: 'success' })
-  } catch (e) {
-    uni.showToast({ title: '发送失败，请重试', icon: 'none' })
+  } catch (e: any) {
+    uni.showToast({ title: e.message || '发送失败，请重试', icon: 'none' })
   }
 }
 
@@ -146,14 +142,22 @@ async function handleRegister() {
   try {
     await userStore.register({
       phone: form.phone,
-      code: form.code,
+      smsCode: form.code,
       nickname: form.nickname,
-      password: form.password,
-      height: form.height ? Number(form.height) : undefined,
-      currentWeight: form.weight ? Number(form.weight) : undefined,
-      targetWeight: form.targetWeight ? Number(form.targetWeight) : undefined,
-      age: form.age ? Number(form.age) : undefined
+      password: form.password
     })
+    // 注册成功后，如果有健康信息，补充更新
+    if (form.height || form.weight || form.targetWeight) {
+      const updateData: Record<string, any> = {}
+      if (form.height) updateData.height = Number(form.height)
+      if (form.targetWeight) updateData.targetWeight = Number(form.targetWeight)
+      if (Object.keys(updateData).length > 0) {
+        await userStore.updateProfile(updateData)
+      }
+      if (form.weight) {
+        await userStore.updateWeight(Number(form.weight))
+      }
+    }
     uni.showToast({ title: '注册成功', icon: 'success' })
     setTimeout(() => {
       uni.reLaunch({ url: '/pages/index/index' })

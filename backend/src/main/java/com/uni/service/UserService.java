@@ -43,4 +43,14 @@ public interface UserService extends IService<UserEntity> {
      * 发送验证码
      */
     void sendSmsCode(String phone, String type);
+
+    /**
+     * 刷新Token
+     */
+    UserInfoVO refreshToken(String refreshToken);
+
+    /**
+     * 验证验证码
+     */
+    void verifySmsCode(String phone, String code);
 }

@@ -23,6 +23,7 @@ export const useMealStore = defineStore('meal', () => {
 
   /**
    * 添加餐食记录（页面调用统一入口）
+   * 页面传入 foodName/amount，这里转换为后端需要的 mealContent/mealTime
    */
   async function addMealRecord(data: {
     mealDate: string
@@ -32,13 +33,17 @@ export const useMealStore = defineStore('meal', () => {
     calorieEstimate?: number
     imageUrl?: string
   }) {
+    // 拼接 mealContent：foodName + amount
+    let mealContent = data.foodName
+    if (data.amount) {
+      mealContent += ` (${data.amount})`
+    }
     const dto: MealRecordDTO = {
-      mealDate: data.mealDate,
+      recordDate: data.mealDate,
       mealType: data.mealType,
-      foodName: data.foodName,
-      amount: data.amount,
-      calorieEstimate: data.calorieEstimate,
-      imageUrl: data.imageUrl
+      mealTime: new Date().toTimeString().substring(0, 5), // HH:mm
+      mealContent: mealContent,
+      calorieEstimate: data.calorieEstimate
     }
     const result = await mealApi.createMealRecord(dto)
     todayMeals.value.push(result)

@@ -8,6 +8,7 @@ import com.uni.vo.meal.MealRecordVO;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 餐食打卡服务接口
@@ -28,6 +29,11 @@ public interface MealRecordService extends IService<MealRecordEntity> {
      * 获取打卡日历
      */
     MealCalendarVO getMealCalendar(Long userId, int year, int month);
+
+    /**
+     * 获取打卡日历区间数据（按日期分组）
+     */
+    Map<String, List<MealRecordVO>> getMealCalendarRange(Long userId, LocalDate startDate, LocalDate endDate);
 
     /**
      * 删除餐食记录

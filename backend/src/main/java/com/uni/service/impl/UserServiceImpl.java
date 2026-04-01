@@ -17,12 +17,15 @@ import com.uni.vo.user.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 用户服务实现
@@ -33,6 +36,10 @@ import java.time.LocalDateTime;
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> implements UserService {
 
     private final JwtUtil jwtUtil;
+    private final StringRedisTemplate redisTemplate;
+
+    private static final String SMS_CODE_PREFIX = "sms:code:";
+    private static final int SMS_CODE_EXPIRE_MINUTES = 5;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -45,8 +52,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
             throw new BizException(BizCode.USER_PHONE_EXISTS, "手机号已注册");
         }
 
-        // TODO: 校验短信验证码
-        // smsService.verifyCode(dto.getPhone(), dto.getSmsCode());
+        // 校验短信验证码
+        verifySmsCode(dto.getPhone(), dto.getSmsCode());
 
         // 创建用户
         UserEntity user = new UserEntity();
@@ -153,8 +160,41 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Override
     public void sendSmsCode(String phone, String type) {
-        // TODO: 接入短信服务商（阿里云/腾讯云）
-        log.info("发送验证码 -> phone={}, type={}", phone, type);
+        // 生成6位随机验证码
+        String code = String.format("%06d", new Random().nextInt(999999));
+        // 存入Redis，5分钟过期
+        String key = SMS_CODE_PREFIX + type + ":" + phone;
+        redisTemplate.opsForValue().set(key, code, SMS_CODE_EXPIRE_MINUTES, TimeUnit.MINUTES);
+        // TODO: 接入短信服务商（阿里云/腾讯云）发送短信
+        // 开发阶段直接打印日志，方便调试
+        log.info("【验证码】phone={}, type={}, code={}", phone, type, code);
+    }
+
+    @Override
+    public void verifySmsCode(String phone, String code) {
+        String key = SMS_CODE_PREFIX + "register:" + phone;
+        String cachedCode = redisTemplate.opsForValue().get(key);
+        if (StrUtil.isBlank(cachedCode)) {
+            throw new BizException(BizCode.USER_SMS_CODE_ERROR, "验证码已过期，请重新获取");
+        }
+        if (!cachedCode.equals(code)) {
+            throw new BizException(BizCode.USER_SMS_CODE_ERROR, "验证码错误");
+        }
+        // 验证通过后删除
+        redisTemplate.delete(key);
+    }
+
+    @Override
+    public UserInfoVO refreshToken(String refreshToken) {
+        Long userId = jwtUtil.getUserId(refreshToken);
+        if (userId == null) {
+            throw new BizException(BizCode.UNAUTHORIZED, "refresh token无效或已过期");
+        }
+        UserEntity user = getById(userId);
+        if (user == null || user.getDeleteFlag() == 1) {
+            throw new BizException(BizCode.NOT_FOUND, "用户不存在");
+        }
+        return buildUserInfoVO(user, true);
     }
 
     /**

@@ -40,6 +40,14 @@
         />
       </view>
       <view class="form-item">
+        <text class="label">出生日期</text>
+        <picker mode="date" :value="form.birthday" @change="onBirthdayChange" :end="todayStr">
+          <view class="input picker-input">
+            <text :class="{ placeholder: !form.birthday }">{{ form.birthday || '请选择出生日期' }}</text>
+          </view>
+        </picker>
+      </view>
+      <view class="form-item">
         <text class="label">性别</text>
         <view class="gender-row">
           <view
@@ -82,13 +90,14 @@ import { useUserStore } from '../../store/user'
 const userStore = useUserStore()
 const userInfo = computed(() => userStore.userInfo)
 const loading = ref(false)
+const todayStr = new Date().toISOString().substring(0, 10)
 
 const form = reactive({
   nickname: '',
   height: undefined as number | undefined,
   currentWeight: undefined as number | undefined,
   targetWeight: undefined as number | undefined,
-  age: undefined as number | undefined,
+  birthday: '' as string,
   gender: undefined as number | undefined
 })
 
@@ -96,8 +105,7 @@ const fields = [
   { key: 'nickname', label: '昵称', placeholder: '请输入昵称', inputType: 'text' },
   { key: 'height', label: '身高(cm)', placeholder: '如: 165', inputType: 'digit' },
   { key: 'currentWeight', label: '当前体重(kg)', placeholder: '如: 60', inputType: 'digit' },
-  { key: 'targetWeight', label: '目标体重(kg)', placeholder: '如: 52', inputType: 'digit' },
-  { key: 'age', label: '年龄', placeholder: '如: 28', inputType: 'number' }
+  { key: 'targetWeight', label: '目标体重(kg)', placeholder: '如: 52', inputType: 'digit' }
 ]
 
 onMounted(async () => {
@@ -109,7 +117,7 @@ onMounted(async () => {
     form.height = userInfo.value.height
     form.currentWeight = userInfo.value.currentWeight
     form.targetWeight = userInfo.value.targetWeight
-    form.age = userInfo.value.age
+    form.birthday = userInfo.value.birthday || ''
     form.gender = userInfo.value.gender
   }
 })
@@ -117,6 +125,10 @@ onMounted(async () => {
 function maskPhone(phone?: string): string {
   if (!phone) return ''
   return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
+}
+
+function onBirthdayChange(e: any) {
+  form.birthday = e.detail.value
 }
 
 async function handleSave() {
@@ -253,6 +265,15 @@ function handleLogout() {
         color: $text-primary;
         background: $bg-color;
         box-sizing: border-box;
+
+        &.picker-input {
+          display: flex;
+          align-items: center;
+
+          .placeholder {
+            color: $text-placeholder;
+          }
+        }
       }
 
       .gender-row {

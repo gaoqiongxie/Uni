@@ -1,6 +1,7 @@
 package com.uni.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.uni.common.PageResult;
 import com.uni.dto.weight.WeightRecordDTO;
 import com.uni.entity.WeightRecordEntity;
 import com.uni.vo.weight.WeightRecordVO;
@@ -22,6 +23,11 @@ public interface WeightRecordService extends IService<WeightRecordEntity> {
      * 获取体重记录列表（分页）
      */
     List<WeightRecordVO> getWeightRecords(Long userId, int page, int size, String startDate, String endDate);
+
+    /**
+     * 获取体重记录分页结果
+     */
+    PageResult<WeightRecordVO> getWeightRecordsPage(Long userId, int page, int size, String startDate, String endDate);
 
     /**
      * 获取体重统计

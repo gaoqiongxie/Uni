@@ -1,5 +1,6 @@
 package com.uni.controller;
 
+import com.uni.common.PageResult;
 import com.uni.common.Result;
 import com.uni.dto.weight.WeightRecordDTO;
 import com.uni.service.WeightRecordService;
@@ -42,6 +43,16 @@ public class WeightRecordController {
                                               @RequestParam(required = false) String startDate,
                                               @RequestParam(required = false) String endDate) {
         return Result.success(weightRecordService.getWeightRecords(userId, page, size, startDate, endDate));
+    }
+
+    @Operation(summary = "分页查询体重记录")
+    @GetMapping("/page")
+    public Result<PageResult<WeightRecordVO>> page(@RequestHeader("X-User-Id") Long userId,
+                                                    @RequestParam(defaultValue = "1") int page,
+                                                    @RequestParam(defaultValue = "10") int size,
+                                                    @RequestParam(required = false) String startDate,
+                                                    @RequestParam(required = false) String endDate) {
+        return Result.success(weightRecordService.getWeightRecordsPage(userId, page, size, startDate, endDate));
     }
 
     @Operation(summary = "获取体重统计")

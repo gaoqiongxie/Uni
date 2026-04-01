@@ -29,4 +29,12 @@ public interface MealRecordMapper extends BaseMapper<MealRecordEntity> {
     List<LocalDate> selectCheckInDates(@Param("userId") Long userId,
                                         @Param("year") int year,
                                         @Param("month") int month);
+
+    /**
+     * 查询用户指定日期范围内的所有餐食记录（按日期、餐时排序）
+     */
+    @Select("SELECT * FROM t_meal_record WHERE user_id = #{userId} AND record_date BETWEEN #{startDate} AND #{endDate} AND delete_flag = 0 ORDER BY record_date ASC, meal_time ASC")
+    List<MealRecordEntity> selectByUserIdAndDateRange(@Param("userId") Long userId,
+                                                      @Param("startDate") LocalDate startDate,
+                                                      @Param("endDate") LocalDate endDate);
 }

@@ -57,8 +57,8 @@
           :key="item.id"
         >
           <view class="food-left">
-            <text class="food-name">{{ item.foodName }}</text>
-            <text class="food-amount">{{ item.amount }}</text>
+            <text class="food-name">{{ item.mealContent }}</text>
+            <text class="food-amount">{{ item.mealTime }}</text>
           </view>
           <view class="food-right">
             <text class="food-cal">{{ item.calorieEstimate }} kcal</text>

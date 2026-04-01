@@ -63,6 +63,16 @@ export const useUserStore = defineStore('user', () => {
   }
 
   /**
+   * 更新体重
+   */
+  async function updateWeight(weight: number) {
+    const result = await userApi.updateWeight(weight)
+    userInfo.value = { ...userInfo.value, ...result } as UserInfoVO
+    setUserInfo(userInfo.value)
+    return result
+  }
+
+  /**
    * 退出登录
    */
   async function logout() {
@@ -95,6 +105,7 @@ export const useUserStore = defineStore('user', () => {
     register,
     refreshUserInfo,
     updateProfile,
+    updateWeight,
     logout
   }
 })

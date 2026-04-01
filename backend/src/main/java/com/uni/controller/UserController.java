@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 用户控制器
  */
@@ -67,6 +70,19 @@ public class UserController {
     public Result<Void> sendSmsCode(@RequestParam String phone,
                                      @RequestParam(defaultValue = "register") String type) {
         userService.sendSmsCode(phone, type);
+        return Result.success();
+    }
+
+    @Operation(summary = "刷新Token")
+    @PostMapping("/refresh-token")
+    public Result<UserInfoVO> refreshToken(@RequestBody Map<String, String> body) {
+        return Result.success(userService.refreshToken(body.get("refreshToken")));
+    }
+
+    @Operation(summary = "退出登录")
+    @PostMapping("/logout")
+    public Result<Void> logout() {
+        // Token 无状态，前端清除本地存储即可
         return Result.success();
     }
 }

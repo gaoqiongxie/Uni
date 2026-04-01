@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 餐食打卡控制器
@@ -50,6 +51,15 @@ public class MealRecordController {
                                             @RequestParam int year,
                                             @RequestParam int month) {
         return Result.success(mealRecordService.getMealCalendar(userId, year, month));
+    }
+
+    @Operation(summary = "获取打卡日历区间数据")
+    @GetMapping("/calendar/range")
+    public Result<Map<String, List<MealRecordVO>>> calendarRange(
+            @RequestHeader("X-User-Id") Long userId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+        return Result.success(mealRecordService.getMealCalendarRange(userId, startDate, endDate));
     }
 
     @Operation(summary = "删除餐食记录")

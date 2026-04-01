@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -104,6 +105,24 @@ public class MealRecordServiceImpl extends ServiceImpl<MealRecordMapper, MealRec
         vo.setCalendar(calendar);
 
         return vo;
+    }
+
+    @Override
+    public Map<String, List<MealRecordVO>> getMealCalendarRange(Long userId, LocalDate startDate, LocalDate endDate) {
+        List<MealRecordEntity> entities = baseMapper.selectByUserIdAndDateRange(userId, startDate, endDate);
+        // 按日期分组，保持插入顺序
+        return entities.stream()
+                .map(entity -> {
+                    MealRecordVO vo = new MealRecordVO();
+                    BeanUtils.copyProperties(entity, vo);
+                    vo.setMealTypeName(getMealTypeName(entity.getMealType()));
+                    return vo;
+                })
+                .collect(Collectors.groupingBy(
+                        vo -> vo.getRecordDate().toString(),
+                        LinkedHashMap::new,
+                        Collectors.toList()
+                ));
     }
 
     @Override
