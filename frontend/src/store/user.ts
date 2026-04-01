@@ -5,7 +5,7 @@ import {
   setToken, setRefreshToken, setUserId, setUserInfo,
   getToken, getUserId, getUserInfo, clearToken, isLoggedIn
 } from '../utils/storage'
-import type { UserInfoVO, UserLoginDTO, UserRegisterDTO } from '../types/user'
+import type { UserInfoVO, UserLoginDTO, PhoneLoginDTO, UserRegisterDTO } from '../types/user'
 
 export const useUserStore = defineStore('user', () => {
   const userInfo = ref<UserInfoVO | null>(null)
@@ -29,6 +29,15 @@ export const useUserStore = defineStore('user', () => {
    */
   async function login(data: UserLoginDTO) {
     const result = await userApi.login(data)
+    _saveLoginInfo(result)
+    return result
+  }
+
+  /**
+   * 手机号验证码登录
+   */
+  async function loginByPhone(data: PhoneLoginDTO) {
+    const result = await userApi.loginByPhone(data)
     _saveLoginInfo(result)
     return result
   }
@@ -102,6 +111,7 @@ export const useUserStore = defineStore('user', () => {
     isLogin,
     initUserState,
     login,
+    loginByPhone,
     register,
     refreshUserInfo,
     updateProfile,

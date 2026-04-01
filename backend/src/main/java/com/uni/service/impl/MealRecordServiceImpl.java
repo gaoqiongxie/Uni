@@ -10,6 +10,7 @@ import com.uni.mapper.MealRecordMapper;
 import com.uni.service.MealRecordService;
 import com.uni.vo.meal.MealCalendarVO;
 import com.uni.vo.meal.MealRecordVO;
+import com.uni.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -35,6 +36,8 @@ public class MealRecordServiceImpl extends ServiceImpl<MealRecordMapper, MealRec
 
     private static final String[] MEAL_TYPE_NAMES = {"", "早餐", "午餐", "晚餐", "加餐"};
 
+    private final FileService fileService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public MealRecordVO createMealRecord(MealRecordDTO dto) {
@@ -46,21 +49,14 @@ public class MealRecordServiceImpl extends ServiceImpl<MealRecordMapper, MealRec
 
         save(entity);
 
-        MealRecordVO vo = new MealRecordVO();
-        BeanUtils.copyProperties(entity, vo);
-        vo.setMealTypeName(getMealTypeName(entity.getMealType()));
+        MealRecordVO vo = toVO(entity);
         return vo;
     }
 
     @Override
     public List<MealRecordVO> getUserMealRecordsByDate(Long userId, LocalDate recordDate) {
         List<MealRecordEntity> entities = baseMapper.selectByUserIdAndDate(userId, recordDate);
-        return entities.stream().map(entity -> {
-            MealRecordVO vo = new MealRecordVO();
-            BeanUtils.copyProperties(entity, vo);
-            vo.setMealTypeName(getMealTypeName(entity.getMealType()));
-            return vo;
-        }).collect(Collectors.toList());
+        return entities.stream().map(this::toVO).collect(Collectors.toList());
     }
 
     @Override
@@ -112,12 +108,7 @@ public class MealRecordServiceImpl extends ServiceImpl<MealRecordMapper, MealRec
         List<MealRecordEntity> entities = baseMapper.selectByUserIdAndDateRange(userId, startDate, endDate);
         // 按日期分组，保持插入顺序
         return entities.stream()
-                .map(entity -> {
-                    MealRecordVO vo = new MealRecordVO();
-                    BeanUtils.copyProperties(entity, vo);
-                    vo.setMealTypeName(getMealTypeName(entity.getMealType()));
-                    return vo;
-                })
+                .map(this::toVO)
                 .collect(Collectors.groupingBy(
                         vo -> vo.getRecordDate().toString(),
                         LinkedHashMap::new,
@@ -140,6 +131,20 @@ public class MealRecordServiceImpl extends ServiceImpl<MealRecordMapper, MealRec
             return "未知";
         }
         return MEAL_TYPE_NAMES[mealType];
+    }
+
+    /**
+     * Entity 转 VO（含图片URL填充）
+     */
+    private MealRecordVO toVO(MealRecordEntity entity) {
+        MealRecordVO vo = new MealRecordVO();
+        BeanUtils.copyProperties(entity, vo);
+        vo.setMealTypeName(getMealTypeName(entity.getMealType()));
+        // 填充图片URL列表
+        if (entity.getAttachmentIds() != null && !entity.getAttachmentIds().isBlank()) {
+            vo.setPhotos(fileService.getFileUrls(entity.getAttachmentIds()));
+        }
+        return vo;
     }
 
     private int calculateCurrentStreak(List<LocalDate> dates) {

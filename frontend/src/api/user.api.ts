@@ -1,5 +1,5 @@
 import http from '../utils/request'
-import type { UserInfoVO, UserLoginDTO, UserRegisterDTO, UserUpdateDTO } from '../types/user'
+import type { UserInfoVO, UserLoginDTO, PhoneLoginDTO, UserRegisterDTO, UserUpdateDTO } from '../types/user'
 
 export const userApi = {
   register: (data: UserRegisterDTO) =>
@@ -7,6 +7,9 @@ export const userApi = {
 
   login: (data: UserLoginDTO) =>
     http.post<UserInfoVO>('/api/user/login', data),
+
+  loginByPhone: (data: PhoneLoginDTO) =>
+    http.post<UserInfoVO>('/api/user/login-by-phone', data),
 
   getUserInfo: () =>
     http.get<UserInfoVO>('/api/user/info'),

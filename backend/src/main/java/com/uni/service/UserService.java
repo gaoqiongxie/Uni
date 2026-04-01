@@ -1,6 +1,7 @@
 package com.uni.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.uni.dto.user.PhoneLoginDTO;
 import com.uni.dto.user.UserLoginDTO;
 import com.uni.dto.user.UserRegisterDTO;
 import com.uni.dto.user.UserUpdateDTO;
@@ -20,9 +21,14 @@ public interface UserService extends IService<UserEntity> {
     UserInfoVO register(UserRegisterDTO dto);
 
     /**
-     * 用户登录
+     * 用户登录（密码方式）
      */
     UserInfoVO login(UserLoginDTO dto);
+
+    /**
+     * 用户登录（手机号+验证码方式）
+     */
+    UserInfoVO loginByPhone(PhoneLoginDTO dto);
 
     /**
      * 获取用户信息
@@ -52,5 +58,5 @@ public interface UserService extends IService<UserEntity> {
     /**
      * 验证验证码
      */
-    void verifySmsCode(String phone, String code);
+    void verifySmsCode(String phone, String code, String type);
 }

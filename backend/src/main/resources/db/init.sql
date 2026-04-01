@@ -105,3 +105,31 @@ CREATE TABLE IF NOT EXISTS `t_attachment` (
   KEY `idx_attachment_type` (`attachment_type`),
   KEY `idx_create_time` (`create_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='附件表';
+
+-- 运动记录表
+CREATE TABLE IF NOT EXISTS `t_exercise_record` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `user_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '用户id',
+  `record_date` date NOT NULL COMMENT '记录日期',
+  `exercise_type` varchar(50) NOT NULL DEFAULT '' COMMENT '运动类型(跑步/游泳/瑜伽/力量训练/骑行/跳绳/散步/其他)',
+  `duration` int(11) NOT NULL DEFAULT '0' COMMENT '运动时长(分钟)',
+  `calorie_burn` int(11) NOT NULL DEFAULT '0' COMMENT '消耗热量(kcal)',
+  `distance` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '运动距离(km)',
+  `heart_rate_avg` int(11) NOT NULL DEFAULT '0' COMMENT '平均心率(bpm)',
+  `heart_rate_max` int(11) NOT NULL DEFAULT '0' COMMENT '最大心率(bpm)',
+  `intensity` tinyint(1) NOT NULL DEFAULT '2' COMMENT '运动强度(1.低强度,2.中等强度,3.高强度)',
+  `feeling` tinyint(1) NOT NULL DEFAULT '0' COMMENT '运动感受(0.一般,1.轻松,2.适中,3.吃力,4.很累)',
+  `attachment_ids` varchar(500) NOT NULL DEFAULT '' COMMENT '附件id列表(逗号分隔)',
+  `record_source` tinyint(1) NOT NULL DEFAULT '1' COMMENT '记录来源(1.手动录入,2.智能设备同步)',
+  `remark` varchar(200) NOT NULL DEFAULT '' COMMENT '备注',
+  `create_user` varchar(50) NOT NULL DEFAULT '' COMMENT '创建人Ad',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_user` varchar(50) NOT NULL DEFAULT '' COMMENT '修改人Ad',
+  `edit_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  `delete_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标记(0.未删除,1.已删除)',
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_record_date` (`record_date`),
+  KEY `idx_exercise_type` (`exercise_type`),
+  KEY `idx_user_date` (`user_id`, `record_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='运动记录表';

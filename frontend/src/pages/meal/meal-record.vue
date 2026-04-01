@@ -58,7 +58,14 @@
         >
           <view class="food-left">
             <text class="food-name">{{ item.mealContent }}</text>
-            <text class="food-amount">{{ item.mealTime }}</text>
+            <view class="food-meta">
+              <text class="food-amount">{{ item.mealTime }}</text>
+              <view class="food-photos" v-if="item.photos && item.photos.length > 0">
+                <image v-for="(photo, idx) in item.photos.slice(0, 3)" :key="idx"
+                  :src="photo" mode="aspectFill" class="food-thumb"
+                  @click="previewPhotos(item.photos, idx)" />
+              </view>
+            </view>
           </view>
           <view class="food-right">
             <text class="food-cal">{{ item.calorieEstimate }} kcal</text>
@@ -91,9 +98,10 @@
           <view class="modal-item">
             <text class="modal-label">图片（可选）</text>
             <view class="img-picker" @click="chooseImage">
-              <image v-if="addForm.imageUrl" :src="addForm.imageUrl" mode="aspectFill" class="preview-img" />
-              <text v-else class="img-plus">📷 拍照/选图</text>
-            </view>
+                <image v-if="addForm.imageUrl" :src="addForm.imageUrl" mode="aspectFill" class="preview-img" />
+                <text v-else class="img-plus">📷 拍照/选图</text>
+                <text v-if="addForm.imageUrl" class="img-remove" @click.stop="removeImage">×</text>
+              </view>
           </view>
         </view>
         <view class="modal-actions">
@@ -207,10 +215,28 @@ function closeModal() {
 function chooseImage() {
   uni.chooseImage({
     count: 1,
+    sizeType: ['compressed'], // 使用压缩图
+    sourceType: ['album', 'camera'],
     success: (res) => {
-      addForm.imageUrl = res.tempFilePaths[0]
+      const tempPath = res.tempFilePaths[0]
+      // 压缩图片后再预览（减小上传体积）
+      uni.compressImage({
+        src: tempPath,
+        quality: 60,
+        success: (compressRes) => {
+          addForm.imageUrl = compressRes.tempFilePath
+        },
+        fail: () => {
+          // 压缩失败就用原图
+          addForm.imageUrl = tempPath
+        }
+      })
     }
   })
+}
+
+function removeImage() {
+  addForm.imageUrl = ''
 }
 
 async function handleAddFood() {
@@ -226,7 +252,7 @@ async function handleAddFood() {
       foodName: addForm.foodName,
       amount: addForm.amount,
       calorieEstimate: addForm.calorieEstimate ? Number(addForm.calorieEstimate) : 0,
-      imageUrl: addForm.imageUrl || undefined
+      imagePath: addForm.imageUrl || undefined
     })
     uni.showToast({ title: '添加成功', icon: 'success' })
     closeModal()
@@ -247,6 +273,13 @@ async function deleteItem(id: number) {
         uni.showToast({ title: '已删除', icon: 'success' })
       }
     }
+  })
+}
+
+function previewPhotos(photos: string[], current: number) {
+  uni.previewImage({
+    urls: photos,
+    current: photos[current]
   })
 }
 
@@ -438,19 +471,38 @@ onMounted(async () => {
 
         &:last-child { border-bottom: none; }
 
-        .food-left {
-          .food-name {
-            display: block;
-            font-size: $font-size-md;
-            color: $text-primary;
-            margin-bottom: 4rpx;
-          }
+          .food-left {
+            flex: 1;
 
-          .food-amount {
-            font-size: $font-size-sm;
-            color: $text-placeholder;
+            .food-name {
+              display: block;
+              font-size: $font-size-md;
+              color: $text-primary;
+              margin-bottom: 4rpx;
+            }
+
+            .food-meta {
+              display: flex;
+              align-items: center;
+              gap: 16rpx;
+
+              .food-amount {
+                font-size: $font-size-sm;
+                color: $text-placeholder;
+              }
+
+              .food-photos {
+                display: flex;
+                gap: 8rpx;
+
+                .food-thumb {
+                  width: 48rpx;
+                  height: 48rpx;
+                  border-radius: 8rpx;
+                }
+              }
+            }
           }
-        }
 
         .food-right {
           display: flex;
@@ -536,6 +588,7 @@ onMounted(async () => {
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            position: relative;
 
             .preview-img { width: 100%; height: 100%; }
 
@@ -543,6 +596,20 @@ onMounted(async () => {
               font-size: $font-size-sm;
               color: $text-placeholder;
               text-align: center;
+            }
+
+            .img-remove {
+              position: absolute;
+              top: 0;
+              right: 0;
+              width: 40rpx;
+              height: 40rpx;
+              background: rgba(0, 0, 0, 0.5);
+              color: #fff;
+              font-size: 28rpx;
+              line-height: 40rpx;
+              text-align: center;
+              border-radius: 0 0 0 12rpx;
             }
           }
         }

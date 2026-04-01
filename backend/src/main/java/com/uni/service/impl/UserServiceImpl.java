@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.uni.common.BizCode;
 import com.uni.common.BizException;
+import com.uni.dto.user.PhoneLoginDTO;
 import com.uni.dto.user.UserLoginDTO;
 import com.uni.dto.user.UserRegisterDTO;
 import com.uni.dto.user.UserUpdateDTO;
@@ -53,7 +54,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         }
 
         // 校验短信验证码
-        verifySmsCode(dto.getPhone(), dto.getSmsCode());
+        verifySmsCode(dto.getPhone(), dto.getSmsCode(), "register");
 
         // 创建用户
         UserEntity user = new UserEntity();
@@ -86,6 +87,43 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         }
 
         if (user.getUserStatus() != 1) {
+            throw new BizException(BizCode.USER_DISABLED, "账号已被禁用");
+        }
+
+        // 更新最后登录时间
+        update(new UserEntity().setLastLoginTime(LocalDateTime.now()),
+                new LambdaQueryWrapper<UserEntity>().eq(UserEntity::getId, user.getId()));
+
+        return buildUserInfoVO(user, true);
+    }
+
+    @Override
+    public UserInfoVO loginByPhone(PhoneLoginDTO dto) {
+        // 验证短信验证码
+        verifySmsCode(dto.getPhone(), dto.getSmsCode(), "login");
+
+        // 根据手机号查询用户，如果不存在则自动创建
+        UserEntity user = getOne(new LambdaQueryWrapper<UserEntity>()
+                .eq(UserEntity::getPhone, dto.getPhone())
+                .eq(UserEntity::getDeleteFlag, 0));
+
+        if (user == null) {
+            // 自动创建用户（首次使用验证码登录）
+            user = new UserEntity();
+            user.setPhone(dto.getPhone());
+            user.setNickname("用户_" + dto.getPhone().substring(7));
+            user.setUsername("user_" + System.currentTimeMillis());
+            user.setPassword(BCrypt.hashpw(System.nanoTime() + "")); // 随机密码
+            user.setUserStatus(1);
+            user.setCalorieGoal(1400);
+            user.setActivityLevel(1);
+            user.setAvatarUrl("");
+            user.setCreateUser(dto.getPhone());
+            user.setUpdateUser(dto.getPhone());
+            user.setDeleteFlag(0);
+            save(user);
+            log.info("新用户通过验证码登录自动创建: phone={}, userId={}", dto.getPhone(), user.getId());
+        } else if (user.getUserStatus() != 1) {
             throw new BizException(BizCode.USER_DISABLED, "账号已被禁用");
         }
 
@@ -171,8 +209,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     }
 
     @Override
-    public void verifySmsCode(String phone, String code) {
-        String key = SMS_CODE_PREFIX + "register:" + phone;
+    public void verifySmsCode(String phone, String code, String type) {
+        String key = SMS_CODE_PREFIX + type + ":" + phone;
         String cachedCode = redisTemplate.opsForValue().get(key);
         if (StrUtil.isBlank(cachedCode)) {
             throw new BizException(BizCode.USER_SMS_CODE_ERROR, "验证码已过期，请重新获取");

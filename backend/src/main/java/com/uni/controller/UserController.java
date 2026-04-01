@@ -1,6 +1,7 @@
 package com.uni.controller;
 
 import com.uni.common.Result;
+import com.uni.dto.user.PhoneLoginDTO;
 import com.uni.dto.user.UserLoginDTO;
 import com.uni.dto.user.UserRegisterDTO;
 import com.uni.dto.user.UserUpdateDTO;
@@ -42,6 +43,13 @@ public class UserController {
     public Result<UserInfoVO> login(@RequestBody @Validated UserLoginDTO dto) {
         log.info("用户登录: phone={}", dto.getPhone());
         return Result.success(userService.login(dto));
+    }
+
+    @Operation(summary = "手机号验证码登录")
+    @PostMapping("/login-by-phone")
+    public Result<UserInfoVO> loginByPhone(@RequestBody @Validated PhoneLoginDTO dto) {
+        log.info("验证码登录: phone={}", dto.getPhone());
+        return Result.success(userService.loginByPhone(dto));
     }
 
     @Operation(summary = "获取当前用户信息")

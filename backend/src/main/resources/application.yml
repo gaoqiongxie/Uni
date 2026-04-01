@@ -83,6 +83,10 @@ app:
     template-code: SMS_XXXXXXXX
     sign-name: 轻瘦App
 
+  # 文件上传本地存储路径
+  file:
+    upload-path: ./uploads
+
   # 默认值配置
   defaults:
     calorie-goal: 1400        # 默认每日热量目标(kcal)

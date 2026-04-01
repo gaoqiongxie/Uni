@@ -25,6 +25,11 @@ export interface UserLoginDTO {
   password: string
 }
 
+export interface PhoneLoginDTO {
+  phone: string
+  smsCode: string
+}
+
 export interface UserRegisterDTO {
   phone: string
   password: string

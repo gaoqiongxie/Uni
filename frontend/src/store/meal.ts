@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
 import { mealApi } from '../api/meal.api'
+import { fileApi } from '../api/file.api'
 import type { MealRecordDTO, MealRecordVO, MealCalendarVO } from '../types/meal'
 
 export const useMealStore = defineStore('meal', () => {
@@ -23,7 +24,7 @@ export const useMealStore = defineStore('meal', () => {
 
   /**
    * 添加餐食记录（页面调用统一入口）
-   * 页面传入 foodName/amount，这里转换为后端需要的 mealContent/mealTime
+   * 支持先上传图片，再将 attachmentIds 传给后端
    */
   async function addMealRecord(data: {
     mealDate: string
@@ -31,8 +32,20 @@ export const useMealStore = defineStore('meal', () => {
     foodName: string
     amount?: string
     calorieEstimate?: number
-    imageUrl?: string
+    imagePath?: string    // 本地临时图片路径（会先上传到服务器）
+    attachmentIds?: string // 已有的附件ID
   }) {
+    // 如果有本地图片，先上传
+    let attachmentIds = data.attachmentIds || ''
+    if (data.imagePath) {
+      try {
+        const fileVO = await fileApi.uploadImage(data.imagePath, 1, 2)
+        attachmentIds = String(fileVO.id)
+      } catch (e) {
+        console.warn('图片上传失败，继续提交餐食记录', e)
+      }
+    }
+
     // 拼接 mealContent：foodName + amount
     let mealContent = data.foodName
     if (data.amount) {
@@ -43,7 +56,11 @@ export const useMealStore = defineStore('meal', () => {
       mealType: data.mealType,
       mealTime: new Date().toTimeString().substring(0, 5), // HH:mm
       mealContent: mealContent,
-      calorieEstimate: data.calorieEstimate
+      calorieEstimate: data.calorieEstimate,
+      recordSource: data.imagePath ? 2 : 1 // 有图片则为拍照识别
+    }
+    if (attachmentIds) {
+      dto.attachmentIds = attachmentIds
     }
     const result = await mealApi.createMealRecord(dto)
     todayMeals.value.push(result)
