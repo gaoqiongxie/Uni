@@ -83,6 +83,19 @@
       "style": {
         "navigationBarTitleText": "运动历史"
       }
+    },
+    {
+      "path": "pages/recipe/recipe-list",
+      "style": {
+        "navigationBarTitleText": "食谱推荐"
+      }
+    },
+    {
+      "path": "pages/recipe/recipe-detail",
+      "style": {
+        "navigationBarTitleText": "食谱详情",
+        "navigationStyle": "custom"
+      }
     }
   ],
   "tabBar": {

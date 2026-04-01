@@ -133,3 +133,59 @@ CREATE TABLE IF NOT EXISTS `t_exercise_record` (
   KEY `idx_exercise_type` (`exercise_type`),
   KEY `idx_user_date` (`user_id`, `record_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='运动记录表';
+
+-- 食谱表
+CREATE TABLE IF NOT EXISTS `t_recipe` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `name` varchar(100) NOT NULL COMMENT '食谱名称',
+  `category` varchar(50) NOT NULL DEFAULT '' COMMENT '分类(早餐/午餐/晚餐/加餐/低卡/高蛋白)',
+  `description` varchar(500) NOT NULL DEFAULT '' COMMENT '食谱简介',
+  `cover_image` varchar(500) NOT NULL DEFAULT '' COMMENT '封面图URL',
+  `calorie` int(11) NOT NULL DEFAULT '0' COMMENT '总热量(kcal)',
+  `protein` decimal(6,2) NOT NULL DEFAULT '0.00' COMMENT '蛋白质(g)',
+  `fat` decimal(6,2) NOT NULL DEFAULT '0.00' COMMENT '脂肪(g)',
+  `carbohydrate` decimal(6,2) NOT NULL DEFAULT '0.00' COMMENT '碳水化合物(g)',
+  `fiber` decimal(6,2) NOT NULL DEFAULT '0.00' COMMENT '膳食纤维(g)',
+  `cooking_time` int(11) NOT NULL DEFAULT '0' COMMENT '烹饪时间(分钟)',
+  `difficulty` tinyint(1) NOT NULL DEFAULT '1' COMMENT '难度(1.简单,2.中等,3.困难)',
+  `steps` text COMMENT '做法步骤(JSON数组)',
+  `tags` varchar(500) NOT NULL DEFAULT '' COMMENT '标签(逗号分隔,如减脂,高蛋白)',
+  `servings` int(11) NOT NULL DEFAULT '1' COMMENT '份数',
+  `like_count` int(11) NOT NULL DEFAULT '0' COMMENT '收藏数',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态(0.下架,1.上架)',
+  `create_user` varchar(50) NOT NULL DEFAULT '' COMMENT '创建人Ad',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_user` varchar(50) NOT NULL DEFAULT '' COMMENT '修改人Ad',
+  `edit_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  `delete_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标记(0.未删除,1.已删除)',
+  PRIMARY KEY (`id`),
+  KEY `idx_category` (`category`),
+  KEY `idx_calorie` (`calorie`),
+  KEY `idx_status` (`status`),
+  KEY `idx_tags` (`tags`(191))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='食谱表';
+
+-- 食材表(食谱-食材关联)
+CREATE TABLE IF NOT EXISTS `t_recipe_ingredient` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `recipe_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '食谱id',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '食材名称',
+  `amount` varchar(50) NOT NULL DEFAULT '' COMMENT '用量(如200g、2个)',
+  `calorie` int(11) NOT NULL DEFAULT '0' COMMENT '食材热量(kcal)',
+  `sort_order` int(11) NOT NULL DEFAULT '0' COMMENT '排序',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_recipe_id` (`recipe_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='食材表';
+
+-- 用户收藏食谱表
+CREATE TABLE IF NOT EXISTS `t_user_favorite_recipe` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `user_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '用户id',
+  `recipe_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '食谱id',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '收藏时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_user_recipe` (`user_id`, `recipe_id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_recipe_id` (`recipe_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户收藏食谱表';
