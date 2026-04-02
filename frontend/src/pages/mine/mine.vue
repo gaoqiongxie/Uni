@@ -40,6 +40,14 @@
       <view class="menu-group">
         <view class="menu-title">健康数据</view>
         <view class="menu-list">
+          <view class="menu-item" @click="goToGoal">
+            <text class="menu-icon">🎯</text>
+            <text class="menu-text">我的目标</text>
+            <view class="menu-right">
+              <text v-if="hasActiveGoal" class="menu-badge">进行中</text>
+              <text class="menu-arrow">›</text>
+            </view>
+          </view>
           <view class="menu-item" @click="goToWeightHistory">
             <text class="menu-icon">⚖️</text>
             <text class="menu-text">体重记录</text>
@@ -103,14 +111,21 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useUserStore } from '../../store/user'
+import { useGoalStore } from '../../store/goal'
 
 const userStore = useUserStore()
+const goalStore = useGoalStore()
 const userInfo = computed(() => userStore.userInfo)
+const hasActiveGoal = computed(() => !!goalStore.activeGoal)
 
 const bmiText = computed(() => {
   const bmi = userInfo.value?.bmi
   return bmi ? bmi.toFixed(1) : '--'
 })
+
+function goToGoal() {
+  uni.navigateTo({ url: '/pages/goal/goal-detail' })
+}
 
 function goToProfile() {
   uni.navigateTo({ url: '/pages/user/profile' })
@@ -163,6 +178,7 @@ onMounted(() => {
   if (!userInfo.value) {
     userStore.refreshUserInfo()
   }
+  goalStore.loadActiveGoal()
 })
 </script>
 
@@ -303,6 +319,20 @@ onMounted(() => {
             flex: 1;
             font-size: $font-size-md;
             color: $text-primary;
+          }
+
+          .menu-right {
+            display: flex;
+            align-items: center;
+            gap: 10rpx;
+          }
+
+          .menu-badge {
+            font-size: $font-size-sm;
+            color: $primary-color;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 4rpx 14rpx;
+            border-radius: 20rpx;
           }
 
           .menu-arrow {

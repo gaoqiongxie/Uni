@@ -46,6 +46,11 @@ public interface UserService extends IService<UserEntity> {
     UserInfoVO updateWeight(Long userId, BigDecimal weight);
 
     /**
+     * 更新目标体重和热量目标
+     */
+    void updateGoal(Long userId, BigDecimal targetWeight, Integer calorieGoal);
+
+    /**
      * 发送验证码
      */
     void sendSmsCode(String phone, String type);

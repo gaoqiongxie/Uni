@@ -189,3 +189,47 @@ CREATE TABLE IF NOT EXISTS `t_user_favorite_recipe` (
   KEY `idx_user_id` (`user_id`),
   KEY `idx_recipe_id` (`recipe_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户收藏食谱表';
+
+-- 用户目标表
+CREATE TABLE IF NOT EXISTS `t_user_goal` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `user_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '用户id',
+  `goal_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '目标类型(1.减重,2.维持,3.增肌)',
+  `start_weight` decimal(5,2) NOT NULL DEFAULT '0.00' COMMENT '起始体重(kg)',
+  `target_weight` decimal(5,2) NOT NULL DEFAULT '0.00' COMMENT '目标体重(kg)',
+  `calorie_goal` int(11) NOT NULL DEFAULT '1400' COMMENT '每日热量目标(kcal)',
+  `exercise_days_per_week` tinyint(1) NOT NULL DEFAULT '3' COMMENT '每周运动天数',
+  `exercise_minutes_per_day` int(11) NOT NULL DEFAULT '30' COMMENT '每日运动时长(分钟)',
+  `start_date` date NOT NULL COMMENT '开始日期',
+  `target_date` date DEFAULT NULL COMMENT '目标截止日期',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态(0.已放弃,1.进行中,2.已达成)',
+  `achieved_date` date DEFAULT NULL COMMENT '达成日期',
+  `remark` varchar(500) NOT NULL DEFAULT '' COMMENT '备注/动力宣言',
+  `create_user` varchar(50) NOT NULL DEFAULT '' COMMENT '创建人Ad',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_user` varchar(50) NOT NULL DEFAULT '' COMMENT '修改人Ad',
+  `edit_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  `delete_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标记(0.未删除,1.已删除)',
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户目标表';
+
+-- 打卡记录汇总表（用于目标完成度统计缓存）
+CREATE TABLE IF NOT EXISTS `t_goal_checkin` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `user_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '用户id',
+  `goal_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '目标id',
+  `checkin_date` date NOT NULL COMMENT '打卡日期',
+  `meal_done` tinyint(1) NOT NULL DEFAULT '0' COMMENT '餐食打卡(0.未完成,1.已完成)',
+  `exercise_done` tinyint(1) NOT NULL DEFAULT '0' COMMENT '运动打卡(0.未完成,1.已完成)',
+  `calorie_in_goal` tinyint(1) NOT NULL DEFAULT '0' COMMENT '热量达标(0.未达标,1.已达标)',
+  `actual_calorie` int(11) NOT NULL DEFAULT '0' COMMENT '当日实际热量',
+  `actual_exercise_minutes` int(11) NOT NULL DEFAULT '0' COMMENT '当日运动时长',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_user_goal_date` (`user_id`, `goal_id`, `checkin_date`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_goal_id` (`goal_id`),
+  KEY `idx_checkin_date` (`checkin_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='打卡记录汇总表';

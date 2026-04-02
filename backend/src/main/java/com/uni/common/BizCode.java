@@ -22,6 +22,8 @@ public interface BizCode {
     int USER_SMS_CODE_ERROR = 10002;     // 验证码错误/过期
     int USER_PASSWORD_ERROR = 10003;     // 用户名或密码错误
     int USER_DISABLED = 10004;           // 用户已被禁用
+    int USER_NOT_FOUND = 10005;          // 用户不存在
+    int PARAM_ERROR = 10006;             // 参数错误
 
     // 体重记录模块 2xxxx
     int WEIGHT_RECORD_EXISTS = 20001;    // 体重记录已存在

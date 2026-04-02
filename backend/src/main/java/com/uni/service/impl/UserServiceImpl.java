@@ -197,6 +197,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     }
 
     @Override
+    public void updateGoal(Long userId, BigDecimal targetWeight, Integer calorieGoal) {
+        UserEntity user = getById(userId);
+        if (user == null) return;
+        if (targetWeight != null) user.setTargetWeight(targetWeight);
+        if (calorieGoal != null) user.setCalorieGoal(calorieGoal);
+        updateById(user);
+    }
+
+    @Override
     public void sendSmsCode(String phone, String type) {
         // 生成6位随机验证码
         String code = String.format("%06d", new Random().nextInt(999999));
