@@ -127,6 +127,14 @@ function goToGoal() {
   uni.navigateTo({ url: '/pages/goal/goal-detail' })
 }
 
+function goToWeeklyReport() {
+  uni.navigateTo({ url: '/pages/report/weekly-report' })
+}
+
+function goToMonthlyReport() {
+  uni.navigateTo({ url: '/pages/report/monthly-report' })
+}
+
 function goToProfile() {
   uni.navigateTo({ url: '/pages/user/profile' })
 }
