@@ -66,6 +66,23 @@
         </view>
       </view>
 
+      <!-- 数据报表 -->
+      <view class="menu-group">
+        <view class="menu-title">数据报表</view>
+        <view class="menu-list">
+          <view class="menu-item" @click="goToWeeklyReport">
+            <text class="menu-icon">📊</text>
+            <text class="menu-text">周减脂报告</text>
+            <text class="menu-arrow">›</text>
+          </view>
+          <view class="menu-item" @click="goToMonthlyReport">
+            <text class="menu-icon">📈</text>
+            <text class="menu-text">月减脂报告</text>
+            <text class="menu-arrow">›</text>
+          </view>
+        </view>
+      </view>
+
       <!-- 我的收藏 -->
       <view class="menu-group">
         <view class="menu-title">我的收藏</view>
@@ -73,6 +90,26 @@
           <view class="menu-item" @click="goToFavoriteRecipes">
             <text class="menu-icon">🍳</text>
             <text class="menu-text">收藏食谱</text>
+            <text class="menu-arrow">›</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 消息通知 -->
+      <view class="menu-group">
+        <view class="menu-title">消息通知</view>
+        <view class="menu-list">
+          <view class="menu-item" @click="goToMessageList">
+            <text class="menu-icon">🔔</text>
+            <text class="menu-text">消息中心</text>
+            <view class="menu-right">
+              <text v-if="unreadCount > 0" class="menu-badge">{{ unreadCount }}</text>
+              <text class="menu-arrow">›</text>
+            </view>
+          </view>
+          <view class="menu-item" @click="goToPushSetting">
+            <text class="menu-icon">🔕</text>
+            <text class="menu-text">推送设置</text>
             <text class="menu-arrow">›</text>
           </view>
         </view>
@@ -117,6 +154,7 @@ const userStore = useUserStore()
 const goalStore = useGoalStore()
 const userInfo = computed(() => userStore.userInfo)
 const hasActiveGoal = computed(() => !!goalStore.activeGoal)
+const unreadCount = ref(0)
 
 const bmiText = computed(() => {
   const bmi = userInfo.value?.bmi
@@ -159,6 +197,14 @@ function goToFavoriteRecipes() {
 
 function goToSettings() {
   uni.navigateTo({ url: '/pages/settings/settings' })
+}
+
+function goToMessageList() {
+  uni.navigateTo({ url: '/pages/notification/message-list' })
+}
+
+function goToPushSetting() {
+  uni.navigateTo({ url: '/pages/notification/push-setting' })
 }
 
 function showAbout() {

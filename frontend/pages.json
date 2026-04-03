@@ -128,6 +128,18 @@
         "navigationBarBackgroundColor": "#667eea",
         "navigationBarTextStyle": "white"
       }
+    },
+    {
+      "path": "pages/notification/message-list",
+      "style": {
+        "navigationBarTitleText": "消息通知"
+      }
+    },
+    {
+      "path": "pages/notification/push-setting",
+      "style": {
+        "navigationBarTitleText": "推送设置"
+      }
     }
   ],
   "tabBar": {
@@ -159,6 +171,12 @@
         "iconPath": "static/icons/recipe.png",
         "selectedIconPath": "static/icons/recipe-active.png",
         "text": "食谱"
+      },
+      {
+        "pagePath": "pages/social/community",
+        "iconPath": "static/icons/community.png",
+        "selectedIconPath": "static/icons/community-active.png",
+        "text": "社区"
       },
       {
         "pagePath": "pages/mine/mine",
