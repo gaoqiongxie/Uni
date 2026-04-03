@@ -33,7 +33,7 @@ function request<T = any>(options: RequestOptions): Promise<T> {
   } = options
 
   // 拼接query参数
-  let fullUrl = BASE_URL + url
+  let fullUrl = API_BASE_URL + url
   if (params && Object.keys(params).length > 0) {
     const query = Object.entries(params)
       .filter(([, v]) => v !== undefined && v !== null)
