@@ -53,6 +53,22 @@
       </view>
     </view>
 
+    <!-- AI助手卡片 -->
+    <view class="ai-card" @click="goToAiAssistant">
+      <view class="ai-content">
+        <view class="ai-avatar">
+          <text>🤖</text>
+        </view>
+        <view class="ai-info">
+          <text class="ai-title">AI智能助手</text>
+          <text class="ai-desc">{{ aiTip || '点击获取个性化减脂建议' }}</text>
+        </view>
+        <view class="ai-arrow">
+          <text>›</text>
+        </view>
+      </view>
+    </view>
+
     <!-- 快速入口 -->
     <view class="section">
       <view class="section-header">
@@ -165,8 +181,26 @@ const tips = [
 ]
 const tip = tips[new Date().getDate() % tips.length]
 
+// AI助手
+const aiTip = ref('')
+
 function goToProfile() {
   uni.navigateTo({ url: '/pages/user/profile' })
+}
+
+async function goToAiAssistant() {
+  // 检查是否已完成画像
+  try {
+    const { checkProfileCompleted } = await import('@/api/ai-assistant.api')
+    const res = await checkProfileCompleted()
+    if (res.code === 200 && res.data) {
+      uni.navigateTo({ url: '/pages/ai-assistant/ai-home' })
+    } else {
+      uni.navigateTo({ url: '/pages/ai-assistant/profile-setup' })
+    }
+  } catch (error) {
+    uni.navigateTo({ url: '/pages/ai-assistant/profile-setup' })
+  }
 }
 function goToMealRecord() {
   uni.switchTab({ url: '/pages/meal/meal-record' })
@@ -313,6 +347,66 @@ onMounted(async () => {
           font-size: $font-size-sm;
           opacity: 0.9;
         }
+      }
+    }
+  }
+
+  // AI助手卡片
+  .ai-card {
+    margin: 30rpx 30rpx 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: $border-radius-lg;
+    padding: 30rpx;
+
+    .ai-content {
+      display: flex;
+      align-items: center;
+    }
+
+    .ai-avatar {
+      width: 90rpx;
+      height: 90rpx;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 24rpx;
+
+      text {
+        font-size: 50rpx;
+      }
+    }
+
+    .ai-info {
+      flex: 1;
+
+      .ai-title {
+        display: block;
+        font-size: 32rpx;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 8rpx;
+      }
+
+      .ai-desc {
+        font-size: 26rpx;
+        color: rgba(255, 255, 255, 0.85);
+      }
+    }
+
+    .ai-arrow {
+      width: 50rpx;
+      height: 50rpx;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      text {
+        font-size: 32rpx;
+        color: #fff;
       }
     }
   }

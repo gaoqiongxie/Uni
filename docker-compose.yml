@@ -23,6 +23,7 @@ services:
       - ./backend/src/main/resources/db/init-water.sql:/docker-entrypoint-initdb.d/06-init-water.sql
       - ./backend/src/main/resources/db/init-sleep.sql:/docker-entrypoint-initdb.d/07-init-sleep.sql
       - ./backend/src/main/resources/db/init-theme.sql:/docker-entrypoint-initdb.d/08-init-theme.sql
+      - ./backend/src/main/resources/db/init-ai-assistant.sql:/docker-entrypoint-initdb.d/09-init-ai-assistant.sql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     networks:
       - uni-network
