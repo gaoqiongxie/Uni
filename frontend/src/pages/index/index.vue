@@ -75,6 +75,14 @@
           <text class="action-icon">🏃</text>
           <text class="action-name">记录运动</text>
         </view>
+        <view class="action-item" @click="goToWaterRecord">
+          <text class="action-icon">💧</text>
+          <text class="action-name">饮水记录</text>
+        </view>
+        <view class="action-item" @click="goToWaterSetting">
+          <text class="action-icon">⚙️</text>
+          <text class="action-name">饮水设置</text>
+        </view>
       </view>
     </view>
 
@@ -169,6 +177,12 @@ function goToExercise() {
 }
 function goToRecipes() {
   uni.switchTab({ url: '/pages/recipe/recipe-list' })
+}
+function goToWaterRecord() {
+  uni.navigateTo({ url: '/pages/water/water-record' })
+}
+function goToWaterSetting() {
+  uni.navigateTo({ url: '/pages/water/water-setting' })
 }
 
 onMounted(async () => {
