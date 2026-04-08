@@ -21,6 +21,7 @@ services:
       - ./backend/src/main/resources/db/init-social.sql:/docker-entrypoint-initdb.d/04-init-social.sql
       - ./backend/src/main/resources/db/init-badge.sql:/docker-entrypoint-initdb.d/05-init-badge.sql
       - ./backend/src/main/resources/db/init-water.sql:/docker-entrypoint-initdb.d/06-init-water.sql
+      - ./backend/src/main/resources/db/init-sleep.sql:/docker-entrypoint-initdb.d/07-init-sleep.sql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     networks:
       - uni-network

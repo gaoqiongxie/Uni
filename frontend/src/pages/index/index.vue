@@ -83,6 +83,14 @@
           <text class="action-icon">⚙️</text>
           <text class="action-name">饮水设置</text>
         </view>
+        <view class="action-item" @click="goToSleepRecord">
+          <text class="action-icon">🌙</text>
+          <text class="action-name">睡眠记录</text>
+        </view>
+        <view class="action-item" @click="goToSleepStats">
+          <text class="action-icon">📊</text>
+          <text class="action-name">睡眠统计</text>
+        </view>
       </view>
     </view>
 
@@ -183,6 +191,12 @@ function goToWaterRecord() {
 }
 function goToWaterSetting() {
   uni.navigateTo({ url: '/pages/water/water-setting' })
+}
+function goToSleepRecord() {
+  uni.navigateTo({ url: '/pages/sleep/sleep-record' })
+}
+function goToSleepStats() {
+  uni.navigateTo({ url: '/pages/sleep/sleep-stats' })
 }
 
 onMounted(async () => {

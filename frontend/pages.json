@@ -164,6 +164,22 @@
         "navigationBarBackgroundColor": "#4facfe",
         "navigationBarTextStyle": "white"
       }
+    },
+    {
+      "path": "pages/sleep/sleep-record",
+      "style": {
+        "navigationBarTitleText": "睡眠记录",
+        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/sleep/sleep-stats",
+      "style": {
+        "navigationBarTitleText": "睡眠统计",
+        "navigationBarBackgroundColor": "#1a1a2e",
+        "navigationBarTextStyle": "white"
+      }
     }
   ],
   "tabBar": {
