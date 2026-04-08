@@ -31,6 +31,18 @@
       </view>
     </view>
 
+    <!-- 外观设置 -->
+    <view class="group-card card">
+      <text class="group-title">外观设置</text>
+      <view class="setting-item" @click="goToThemeSetting">
+        <text class="s-label">主题设置</text>
+        <view class="s-right">
+          <text class="s-val">{{ themeStore.isDark ? '🌙 深色' : '☀️ 浅色' }}</text>
+          <text class="s-arrow">›</text>
+        </view>
+      </view>
+    </view>
+
     <!-- 提醒设置 -->
     <view class="group-card card">
       <text class="group-title">提醒设置</text>
@@ -114,9 +126,11 @@
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
 import { useUserStore } from '../../store/user'
+import { useThemeStore } from '../../stores/theme'
 import { getStorage, setStorage } from '../../utils/storage'
 
 const userStore = useUserStore()
+const themeStore = useThemeStore()
 const userInfo = computed(() => userStore.userInfo)
 
 const showGoalModal = ref(false)
@@ -137,6 +151,10 @@ function maskPhone(phone?: string): string {
 
 function goToProfile() {
   uni.navigateTo({ url: '/pages/user/profile' })
+}
+
+function goToThemeSetting() {
+  uni.navigateTo({ url: '/pages/theme/theme-setting' })
 }
 
 function onSwitchChange(key: keyof typeof settings, e: any) {

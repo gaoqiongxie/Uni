@@ -1,0 +1,246 @@
+/**
+ * 全局主题样式
+ * 支持浅色/深色模式切换
+ */
+
+// ========== CSS变量定义 ==========
+:root {
+  // 主题色（动态设置）
+  --primary-color: #667eea;
+  --primary-light: rgba(102, 126, 234, 0.1);
+  --primary-medium: rgba(102, 126, 234, 0.3);
+  
+  // 字体缩放
+  --font-scale: 1;
+  
+  // 浅色模式默认变量
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f0f2f5;
+  --bg-card: #ffffff;
+  --bg-input: #f5f7fa;
+  --bg-hover: #f0f2f5;
+  --bg-pressed: #e8eaed;
+  
+  --text-primary: #1a1a2e;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  --text-inverse: #ffffff;
+  --text-disabled: #cccccc;
+  
+  --border-primary: #e8eaed;
+  --border-secondary: #f0f2f5;
+  
+  --shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+  
+  --mask: rgba(0, 0, 0, 0.5);
+  --mask-light: rgba(0, 0, 0, 0.2);
+}
+
+// 深色模式
+.dark {
+  --bg-primary: #0d0d0d;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #262626;
+  --bg-card: #1a1a1a;
+  --bg-input: #262626;
+  --bg-hover: #333333;
+  --bg-pressed: #404040;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --text-tertiary: #808080;
+  --text-inverse: #1a1a2e;
+  --text-disabled: #666666;
+  
+  --border-primary: #333333;
+  --border-secondary: #262626;
+  
+  --shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8rpx 32rpx rgba(0, 0, 0, 0.5);
+  
+  --mask: rgba(0, 0, 0, 0.7);
+  --mask-light: rgba(0, 0, 0, 0.4);
+}
+
+// ========== 页面基础样式 ==========
+page {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: calc(28rpx * var(--font-scale));
+  line-height: 1.6;
+}
+
+// ========== 通用类名 ==========
+
+// 背景色
+.bg-primary { background-color: var(--bg-primary) !important; }
+.bg-secondary { background-color: var(--bg-secondary) !important; }
+.bg-tertiary { background-color: var(--bg-tertiary) !important; }
+.bg-card { background-color: var(--bg-card) !important; }
+.bg-input { background-color: var(--bg-input) !important; }
+
+// 文字色
+.text-primary { color: var(--text-primary) !important; }
+.text-secondary { color: var(--text-secondary) !important; }
+.text-tertiary { color: var(--text-tertiary) !important; }
+.text-inverse { color: var(--text-inverse) !important; }
+.text-disabled { color: var(--text-disabled) !important; }
+
+// 边框
+.border-primary { border-color: var(--border-primary) !important; }
+.border-secondary { border-color: var(--border-secondary) !important; }
+
+// 阴影
+.shadow-sm { box-shadow: var(--shadow-sm) !important; }
+.shadow-md { box-shadow: var(--shadow-md) !important; }
+.shadow-lg { box-shadow: var(--shadow-lg) !important; }
+
+// ========== 组件适配 ==========
+
+// 卡片
+.theme-card {
+  background-color: var(--bg-card);
+  border-radius: 16rpx;
+  box-shadow: var(--shadow-sm);
+  padding: 24rpx;
+}
+
+// 输入框
+.theme-input {
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  border: 2rpx solid var(--border-primary);
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+}
+
+// 按钮
+.theme-btn {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color) 100%);
+  color: #ffffff;
+  border-radius: 40rpx;
+  padding: 24rpx 48rpx;
+  font-weight: 500;
+  
+  &-secondary {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+  
+  &-outline {
+    background-color: transparent;
+    border: 2rpx solid var(--border-primary);
+    color: var(--text-primary);
+  }
+}
+
+// 列表项
+.theme-list-item {
+  background-color: var(--bg-card);
+  border-bottom: 2rpx solid var(--border-secondary);
+  padding: 24rpx;
+  
+  &:active {
+    background-color: var(--bg-hover);
+  }
+}
+
+// 分隔线
+.theme-divider {
+  height: 2rpx;
+  background-color: var(--border-secondary);
+  margin: 24rpx 0;
+}
+
+// 标签
+.theme-tag {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  padding: 8rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: calc(22rpx * var(--font-scale));
+}
+
+// 导航栏适配
+.theme-navbar {
+  background-color: var(--bg-secondary);
+  border-bottom: 2rpx solid var(--border-secondary);
+}
+
+// TabBar适配（深色模式）
+.dark .tab-bar {
+  background-color: var(--bg-secondary);
+  border-top: 2rpx solid var(--border-primary);
+}
+
+// ========== 页面特定适配 ==========
+
+// 首页
+.dark .index-page {
+  .quick-actions {
+    .action-item {
+      background-color: var(--bg-card);
+      
+      &:active {
+        background-color: var(--bg-hover);
+      }
+    }
+  }
+}
+
+// 表单页面
+.dark .form-page {
+  .form-item {
+    background-color: var(--bg-card);
+    border-bottom: 2rpx solid var(--border-secondary);
+    
+    .label {
+      color: var(--text-primary);
+    }
+    
+    input, textarea {
+      color: var(--text-primary);
+    }
+  }
+}
+
+// 列表页面
+.dark .list-page {
+  .list-item {
+    background-color: var(--bg-card);
+    border-bottom: 2rpx solid var(--border-secondary);
+  }
+}
+
+// ========== 图表适配 ==========
+.dark {
+  .chart-container {
+    background-color: var(--bg-card);
+  }
+  
+  .chart-axis {
+    color: var(--text-secondary);
+  }
+  
+  .chart-grid {
+    stroke: var(--border-secondary);
+  }
+}
+
+// ========== 动画过渡 ==========
+.theme-transition {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+// 所有元素默认过渡
+page, view, text, input, textarea, button, scroll-view {
+  @extend .theme-transition;
+}
