@@ -17,6 +17,9 @@ services:
       - mysql_data:/var/lib/mysql
       - ./backend/src/main/resources/db/init.sql:/docker-entrypoint-initdb.d/01-init.sql
       - ./backend/src/main/resources/db/init-data.sql:/docker-entrypoint-initdb.d/02-init-data.sql
+      - ./backend/src/main/resources/db/init-notification.sql:/docker-entrypoint-initdb.d/03-init-notification.sql
+      - ./backend/src/main/resources/db/init-social.sql:/docker-entrypoint-initdb.d/04-init-social.sql
+      - ./backend/src/main/resources/db/init-badge.sql:/docker-entrypoint-initdb.d/05-init-badge.sql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     networks:
       - uni-network

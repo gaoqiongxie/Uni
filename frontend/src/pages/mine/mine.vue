@@ -83,6 +83,21 @@
         </view>
       </view>
 
+      <!-- 成就徽章 -->
+      <view class="menu-group">
+        <view class="menu-title">成就徽章</view>
+        <view class="menu-list">
+          <view class="menu-item" @click="goToBadgeList">
+            <text class="menu-icon">🏆</text>
+            <text class="menu-text">我的徽章</text>
+            <view class="menu-right">
+              <text v-if="newBadgeCount > 0" class="menu-badge">{{ newBadgeCount }}</text>
+              <text class="menu-arrow">›</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
       <!-- 我的收藏 -->
       <view class="menu-group">
         <view class="menu-title">我的收藏</view>
@@ -155,6 +170,7 @@ const goalStore = useGoalStore()
 const userInfo = computed(() => userStore.userInfo)
 const hasActiveGoal = computed(() => !!goalStore.activeGoal)
 const unreadCount = ref(0)
+const newBadgeCount = ref(0)
 
 const bmiText = computed(() => {
   const bmi = userInfo.value?.bmi
@@ -205,6 +221,10 @@ function goToMessageList() {
 
 function goToPushSetting() {
   uni.navigateTo({ url: '/pages/notification/push-setting' })
+}
+
+function goToBadgeList() {
+  uni.navigateTo({ url: '/pages/badge/badge-list' })
 }
 
 function showAbout() {

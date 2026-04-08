@@ -140,6 +140,14 @@
       "style": {
         "navigationBarTitleText": "推送设置"
       }
+    },
+    {
+      "path": "pages/badge/badge-list",
+      "style": {
+        "navigationBarTitleText": "成就徽章",
+        "navigationBarBackgroundColor": "#667eea",
+        "navigationBarTextStyle": "white"
+      }
     }
   ],
   "tabBar": {
