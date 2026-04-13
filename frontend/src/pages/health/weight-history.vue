@@ -1,5 +1,17 @@
 <template>
   <view class="weight-history-container">
+    <!-- 体脂率入口 -->
+    <view class="body-fat-entry card" @click="goToBodyComposition">
+      <view class="entry-left">
+        <text class="entry-title">身体成分分析</text>
+        <text class="entry-subtitle">体脂率 / 肌肉量 / 水分率</text>
+      </view>
+      <view class="entry-right">
+        <text v-if="latestBodyFat" class="body-fat-val">{{ latestBodyFat }}%</text>
+        <text class="entry-arrow">›</text>
+      </view>
+    </view>
+
     <!-- 统计卡片 -->
     <view class="stats-row">
       <view class="stat-card card">
@@ -92,6 +104,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useHealthStore } from '../../store/health'
+import { getLatestBodyComposition } from '@/api/body-composition.api'
 
 const healthStore = useHealthStore()
 const activeRange = ref('month')
@@ -99,6 +112,22 @@ const page = ref(1)
 const pageSize = 20
 const loadingMore = ref(false)
 const hasMore = ref(true)
+const latestBodyFat = ref<number | null>(null)
+
+async function loadBodyFat() {
+  try {
+    const res = await getLatestBodyComposition()
+    if (res.data) {
+      latestBodyFat.value = res.data.bodyFatRate
+    }
+  } catch (e) {
+    // 忽略错误
+  }
+}
+
+function goToBodyComposition() {
+  uni.navigateTo({ url: '/pages/health/body-composition' })
+}
 
 const rangeTabs = [
   { label: '近7天', value: 'week' },
@@ -156,6 +185,7 @@ async function loadMore() {
 
 onMounted(async () => {
   await healthStore.loadWeightRecords({ page: 1, pageSize })
+  await loadBodyFat()
 })
 </script>
 
@@ -166,6 +196,46 @@ onMounted(async () => {
   min-height: 100vh;
   background: $bg-color;
   padding: 24rpx 30rpx 60rpx;
+
+  .body-fat-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30rpx;
+    margin-bottom: 24rpx;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16rpx;
+
+    .entry-left {
+      .entry-title {
+        font-size: 32rpx;
+        font-weight: 600;
+        color: #fff;
+        display: block;
+        margin-bottom: 8rpx;
+      }
+      .entry-subtitle {
+        font-size: 24rpx;
+        color: rgba(255,255,255,0.8);
+      }
+    }
+
+    .entry-right {
+      display: flex;
+      align-items: center;
+      gap: 16rpx;
+
+      .body-fat-val {
+        font-size: 36rpx;
+        font-weight: 700;
+        color: #fff;
+      }
+      .entry-arrow {
+        font-size: 40rpx;
+        color: rgba(255,255,255,0.8);
+      }
+    }
+  }
 
   .stats-row {
     display: flex;

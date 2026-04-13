@@ -26,6 +26,7 @@
 |------|----------|------|
 | 👤 **用户体系** | 登录/注册、个人资料管理 | login, register, profile |
 | ⚖️ **体重管理** | 记录体重、查看历史、体重目标设定 | record-weight, weight-history, goal-set |
+| 📊 **身体成分** | 体脂率计算（海军法公式）、肌肉量/骨量/水分率估算、历史趋势 | body-composition |
 | 🍽️ **餐食打卡** | 拍照/文字记录每餐、打卡日历 | meal-record, meal-calendar |
 | 🏃 **运动记录** | 添加运动项目、查看运动历史、消耗统计 | exercise-record, exercise-add, exercise-list |
 | 📖 **食谱推荐** | 分类浏览、搜索、收藏、营养详情 | recipe-list, recipe-detail |
@@ -78,7 +79,8 @@ uni/
 │   │           ├── init.sql                # 基础表
 │   │           ├── init-recipe.sql         # 食谱表
 │   │           ├── init-theme.sql          # 主题表
-│   │           └── init-ai-assistant.sql   # AI 助手表
+│   │           ├── init-ai-assistant.sql   # AI 助手表
+│   │           └── init-body-composition.sql # 身体成分表
 │   ├── Dockerfile
 │   └── pom.xml
 │
@@ -96,7 +98,7 @@ uni/
 │   │   ├── pages/                  # 页面
 │   │   │   ├── index/              # 首页
 │   │   │   ├── user/               # 用户 (login/register/profile)
-│   │   │   ├── health/             # 健康 (weight-record/weight-history)
+│   │   │   ├── health/             # 健康 (weight-record/weight-history/body-composition)
 │   │   │   ├── meal/               # 餐食 (meal-record/meal-calendar)
 │   │   │   ├── exercise/           # 运动 (exercise-record/exercise-list)
 │   │   │   ├── recipe/             # 食谱 (recipe-list/recipe-detail)
@@ -147,6 +149,7 @@ uni/
 | `t_ai_chat_history` | AI 对话历史表 | ✅ Sprint 10 |
 | `t_personalized_plan` | 个性化计划表 | ✅ Sprint 10 |
 | `t_ai_daily_tip` | AI 每日建议表 | ✅ Sprint 10 |
+| `t_body_composition` | 身体成分记录表 | ✅ Sprint 11 |
 
 ---
 
@@ -236,6 +239,7 @@ docker-compose down
 | 目标 | `/api/goal` | 设置目标、查看进度 |
 | 主题 | `/api/theme` | 获取/更新主题设置 |
 | AI 助手 | `/api/ai` | 画像、计划、对话 |
+| 身体成分 | `/api/body-composition` | 记录、查询历史、计算体脂率 |
 
 完整 API 文档启动后访问：
 ```
