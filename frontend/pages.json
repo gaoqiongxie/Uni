@@ -61,6 +61,14 @@
       }
     },
     {
+      "path": "pages/meal/food-record",
+      "style": {
+        "navigationBarTitleText": "食物记录",
+        "navigationBarBackgroundColor": "#667eea",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
       "path": "pages/exercise/exercise-record",
       "style": {
         "navigationBarTitleText": "运动记录",

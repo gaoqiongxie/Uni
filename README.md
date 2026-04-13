@@ -27,7 +27,7 @@
 | 👤 **用户体系** | 登录/注册、个人资料管理 | login, register, profile |
 | ⚖️ **体重管理** | 记录体重、查看历史、体重目标设定 | record-weight, weight-history, goal-set |
 | 📊 **身体成分** | 体脂率计算（海军法公式）、肌肉量/骨量/水分率估算、历史趋势 | body-composition |
-| 🍽️ **餐食打卡** | 拍照/文字记录每餐、打卡日历 | meal-record, meal-calendar |
+| 🍽️ **餐食打卡** | 拍照/文字记录每餐、打卡日历、食物热量记录 | meal-record, meal-calendar, food-record |
 | 🏃 **运动记录** | 添加运动项目、查看运动历史、消耗统计 | exercise-record, exercise-add, exercise-list |
 | 📖 **食谱推荐** | 分类浏览、搜索、收藏、营养详情 | recipe-list, recipe-detail |
 | 🤖 **AI 助手** | 用户画像收集、智能分析、个性化计划生成、AI 对话 | profile-setup, ai-home, ai-chat |
@@ -150,6 +150,8 @@ uni/
 | `t_personalized_plan` | 个性化计划表 | ✅ Sprint 10 |
 | `t_ai_daily_tip` | AI 每日建议表 | ✅ Sprint 10 |
 | `t_body_composition` | 身体成分记录表 | ✅ Sprint 11 |
+| `t_food_library` | 食物热量库表 | ✅ Sprint 11 |
+| `t_food_daily_log` | 用户每日食物摄入记录表 | ✅ Sprint 11 |
 
 ---
 
@@ -240,6 +242,7 @@ docker-compose down
 | 主题 | `/api/theme` | 获取/更新主题设置 |
 | AI 助手 | `/api/ai` | 画像、计划、对话 |
 | 身体成分 | `/api/body-composition` | 记录、查询历史、计算体脂率 |
+| 食物 | `/api/food` | 食物库、热量记录、每日汇总 |
 
 完整 API 文档启动后访问：
 ```
