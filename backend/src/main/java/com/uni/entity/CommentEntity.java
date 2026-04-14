@@ -7,17 +7,16 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@TableName("t_moment")
-public class MomentEntity {
+@TableName("t_comment")
+public class CommentEntity {
     @TableId(type = IdType.AUTO)
     private Long id;
     private Long userId;
+    private String targetType;
+    private Long targetId;
     private String content;
-    private String images;
-    private String type;
-    private Long relatedId;
+    private Long parentId;
     private Integer likeCount;
-    private Integer commentCount;
     private Integer status;
     private LocalDateTime createTime;
 }

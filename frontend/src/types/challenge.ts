@@ -3,10 +3,10 @@ export interface Challenge {
   title: string;
   description: string;
   type: string;
-  targetValue: number;
-  targetUnit: string;
+  typeName: string;
+  targetValue?: number;
+  targetUnit?: string;
   durationDays: number;
-  coverUrl: string;
   joinedCount: number;
 }
 
@@ -15,13 +15,22 @@ export interface UserChallenge {
   challengeId: number;
   title: string;
   type: string;
+  durationDays: number;
   status: number;
+  statusName: string;
   startDate: string;
   endDate: string;
-  durationDays: number;
   checkinCount: number;
   streakDays: number;
   completeRate: number;
-  daysPassed: number;
-  daysRemaining: number;
+  todayChecked: boolean;
+}
+
+export interface ChallengeCheckin {
+  id: number;
+  challengeId: number;
+  checkinDate: string;
+  actualValue?: number;
+  note?: string;
+  photoUrl?: string;
 }

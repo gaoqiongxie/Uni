@@ -4,16 +4,11 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class MomentVO {
+public class CommentVO {
     private Long id;
     private Long userId;
     private String nickname;
     private String avatarUrl;
     private String content;
-    private String images;
-    private String type;
-    private Integer likeCount;
-    private Integer commentCount;
-    private Boolean liked;
     private LocalDateTime createTime;
 }

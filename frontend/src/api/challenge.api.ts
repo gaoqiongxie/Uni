@@ -1,9 +1,21 @@
 import { request } from '@/utils/request';
-import type { Challenge, UserChallenge } from '@/types/challenge';
 
-export const challengeApi = {
-  getList: () => request.get<Challenge[]>('/api/challenge/list'),
-  join: (challengeId: number) => request.post(`/api/challenge/join/${challengeId}`),
-  getMyChallenges: () => request.get<UserChallenge[]>('/api/challenge/my'),
-  checkin: (challengeId: number, note?: string) => request.post(`/api/challenge/checkin/${challengeId}`, null, { params: { note } }),
+export const getChallenges = () => {
+  return request({ url: '/api/challenge/list', method: 'GET' });
+};
+
+export const getMyChallenges = () => {
+  return request({ url: '/api/challenge/my', method: 'GET' });
+};
+
+export const joinChallenge = (challengeId: number) => {
+  return request({ url: '/api/challenge/join', method: 'POST', data: { challengeId } });
+};
+
+export const checkin = (data: { challengeId: number; actualValue?: number; note?: string; photoUrl?: string }) => {
+  return request({ url: '/api/challenge/checkin', method: 'POST', data });
+};
+
+export const getCheckinList = (challengeId: number) => {
+  return request({ url: '/api/challenge/checkin/list', method: 'GET', data: { challengeId } });
 };

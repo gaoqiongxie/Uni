@@ -153,6 +153,17 @@ uni/
 | `t_food_library` | 食物热量库表 | ✅ Sprint 11 |
 | `t_food_daily_log` | 用户每日食物摄入记录表 | ✅ Sprint 11 |
 | `t_exercise_library` | 运动库表 | ✅ Sprint 11 |
+| `t_challenge` | 挑战活动表 | ✅ Sprint 11 |
+| `t_user_challenge` | 用户参与挑战表 | ✅ Sprint 11 |
+| `t_challenge_checkin` | 挑战打卡记录表 | ✅ Sprint 11 |
+| `t_friend` | 好友关系表 | ✅ Sprint 11 |
+| `t_moment` | 动态表 | ✅ Sprint 11 |
+| `t_like` | 点赞表 | ✅ Sprint 11 |
+| `t_comment` | 评论表 | ✅ Sprint 11 |
+| `t_body_composition` | 身体成分记录表 | ✅ Sprint 11 |
+| `t_food_library` | 食物热量库表 | ✅ Sprint 11 |
+| `t_food_daily_log` | 用户每日食物摄入记录表 | ✅ Sprint 11 |
+| `t_exercise_library` | 运动库表 | ✅ Sprint 11 |
 | `t_calorie_summary` | 热量汇总表 | ✅ Sprint 11 |
 | `t_challenge` | 挑战活动表 | ✅ Sprint 11 |
 | `t_user_challenge` | 用户参与挑战表 | ✅ Sprint 11 |
@@ -242,12 +253,19 @@ docker-compose down
 | 体重 | `/api/weight-record` | 记录体重、查询历史 |
 | 餐食 | `/api/meal-record` | 打卡、查询日历 |
 | 运动 | `/api/exercise` | 添加运动、查询列表 |
+| 运动库 | `/api/exercise-library` | 运动库查询、消耗计算 |
 | 食谱 | `/api/recipe` | 列表、详情、收藏 |
+| 挑战 | `/api/challenge` | 挑战列表、参与、打卡 |
+| 社交 | `/api/social` | 好友、动态、点赞、评论 |
 | 目标 | `/api/goal` | 设置目标、查看进度 |
 | 主题 | `/api/theme` | 获取/更新主题设置 |
 | AI 助手 | `/api/ai` | 画像、计划、对话 |
 | 身体成分 | `/api/body-composition` | 记录、查询历史、计算体脂率 |
 | 食物 | `/api/food` | 食物库、热量记录、每日汇总 |
+| 运动库 | `/api/exercise-library` | 运动库、MET消耗计算 |
+| 热量看板 | `/api/calorie-dashboard` | 今日收支、趋势分析 |
+| 挑战 | `/api/challenge` | 挑战列表、参与、打卡 |
+| 社交 | `/api/social` | 好友、动态、点赞、评论 |
 
 完整 API 文档启动后访问：
 ```
