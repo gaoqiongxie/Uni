@@ -123,6 +123,13 @@
       }
     },
     {
+      "path": "pages/dashboard/calorie-dashboard",
+      "style": {
+        "navigationBarTitleText": "热量收支看板",
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/goal/goal-detail",
       "style": {
         "navigationBarTitleText": "我的目标",
