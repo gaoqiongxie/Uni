@@ -229,7 +229,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getLatestBodyComposition, getBodyCompositionHistory, recordBodyComposition } from '@/api/body-composition.api';
-import type { BodyComposition, BodyCompositionDTO } from '@/types/body-composition';
+import type { BodyComposition } from '@/types/body-composition';
 import { FAT_LEVEL_CONFIG } from '@/types/body-composition';
 
 const loading = ref(false);
@@ -237,8 +237,9 @@ const todayRecord = ref<BodyComposition | null>(null);
 const historyList = ref<BodyComposition[]>([]);
 const result = ref<BodyComposition | null>(null);
 
-const form = ref<BodyCompositionDTO>({
-  gender: 'male',
+// 表单数据（均用string便于input双向绑定，提交时转number）
+const form = ref({
+  gender: 'male' as 'male' | 'female',
   height: '',
   weight: '',
   waist: '',

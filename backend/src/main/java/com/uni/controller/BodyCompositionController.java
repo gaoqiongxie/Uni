@@ -6,6 +6,7 @@ import com.uni.service.BodyCompositionService;
 import com.uni.vo.BodyCompositionVO;
 import com.uni.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class BodyCompositionController {
      * POST /api/body-composition/record
      */
     @PostMapping("/record")
-    public Result<BodyCompositionVO> record(@RequestBody BodyCompositionDTO dto, HttpServletRequest request) {
+    public Result<BodyCompositionVO> record(@Valid @RequestBody BodyCompositionDTO dto, HttpServletRequest request) {
         Long userId = getUserId(request);
         BodyCompositionVO vo = bodyCompositionService.record(dto, userId);
         return Result.success(vo);

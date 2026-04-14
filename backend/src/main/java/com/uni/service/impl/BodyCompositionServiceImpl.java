@@ -36,7 +36,7 @@ public class BodyCompositionServiceImpl implements BodyCompositionService {
     public BodyCompositionVO record(BodyCompositionDTO dto, Long userId) {
         // 解析日期
         LocalDate recordDate = LocalDate.now();
-        if (!StringUtils.isEmpty(dto.getRecordDate())) {
+        if (StringUtils.hasText(dto.getRecordDate())) {
             recordDate = LocalDate.parse(dto.getRecordDate());
         }
 
