@@ -83,6 +83,13 @@
       }
     },
     {
+      "path": "pages/exercise/exercise-calc",
+      "style": {
+        "navigationBarTitleText": "运动消耗计算",
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/exercise/exercise-list",
       "style": {
         "navigationBarTitleText": "运动历史"
