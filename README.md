@@ -152,6 +152,11 @@ uni/
 | `t_body_composition` | 身体成分记录表 | ✅ Sprint 11 |
 | `t_food_library` | 食物热量库表 | ✅ Sprint 11 |
 | `t_food_daily_log` | 用户每日食物摄入记录表 | ✅ Sprint 11 |
+| `t_exercise_library` | 运动库表 | ✅ Sprint 11 |
+| `t_calorie_summary` | 热量汇总表 | ✅ Sprint 11 |
+| `t_challenge` | 挑战活动表 | ✅ Sprint 11 |
+| `t_user_challenge` | 用户参与挑战表 | ✅ Sprint 11 |
+| `t_challenge_checkin` | 挑战打卡记录表 | ✅ Sprint 11 |
 
 ---
 
